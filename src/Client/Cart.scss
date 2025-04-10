@@ -1,0 +1,250 @@
+.cart_container {
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  margin-top: 80px;
+  font-size: 1.3rem;
+  color: #666;
+  display: flex;
+  flex-direction: column;
+  .cart-title {
+    width: 100%;
+    padding: 10px;
+  }
+  .cart-contents {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    flex-wrap: wrap;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    width: 80%;
+    margin: 20px auto;
+    .user-info {
+      display: flex;
+      margin: 0 auto;
+      align-items: center;
+
+      form {
+        display: flex;
+        align-items: center;
+      }
+      form + form {
+        margin-left: 10px;
+      }
+      button {
+        margin: 0 auto;
+        margin-left: 10px;
+      }
+    }
+    .cart-item-list {
+      width: 100%;
+      display: flex;
+      margin: 0 auto;
+      padding-top: 0px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+
+      .cart-item-left {
+        flex: 1;
+
+        .cart-item-theme {
+          width: 100%;
+          display: flex;
+          padding: 0 10px;
+          .cart-item-img {
+            width: 100px;
+            height: 100px;
+            img {
+              width: 100%;
+              height: 100%;
+            }
+          }
+          .cart-item-content {
+            flex: 1;
+            padding: 0 10px;
+            display: flex;
+          }
+        }
+      }
+      .cart-item-right {
+        flex: 1;
+        .checkout-container {
+          width: 80%;
+          margin: 0 auto;
+          .discount {
+            display: flex;
+            border: 1px dotted #ccc;
+            padding: 10px 0;
+            flex-direction: column;
+            position: relative;
+            margin-bottom: 15px;
+            h3 {
+              width: 100%;
+            }
+            .form-discount {
+              width: 100%;
+              display: flex;
+              flex-direction: column;
+              //   margin: 0 auto;
+
+              & > div {
+                display: flex;
+                align-items: center;
+                margin: 0 auto;
+                width: 100%;
+
+                input {
+                  flex: 1;
+                }
+                button {
+                  margin-left: 10px;
+                }
+              }
+              .list-discount {
+                width: 100%;
+                background-color: #fff;
+                display: flex;
+                flex-direction: column;
+                overflow-y: scroll;
+                max-height: 190px;
+                .discount-item {
+                  width: 100%;
+                  display: flex;
+                  justify-content: space-around;
+                  border: 0 1px dotted #ccc;
+                  padding: 5px 5px;
+                  .discount-title {
+                    flex: 1;
+                    text-align: left;
+                    margin-left: 5px;
+                  }
+                  div:first-child {
+                    flex: 1;
+                  }
+                  .button-list {
+                    .btn-condition {
+                      //   position: relative;
+                      .condition-modal {
+                        width: 400px;
+                        // height: 100px;
+                        background-color: #fff;
+                        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+                        position: absolute;
+                        color: var(--black-color);
+                        right: 0;
+                        border-radius: 3px;
+                        border: 1px solid #ccc;
+                        // top: 100%;
+                        z-index: 10;
+
+                        h3 {
+                          margin-top: 10px;
+                        }
+                        .condition-content {
+                          text-align: left;
+                          padding: 0 10px;
+                          display: flex;
+                          flex-wrap: wrap;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .checkout-list {
+            border: 1px dotted #ccc;
+            padding: 10px;
+            .checkout-item {
+              display: flex;
+              justify-content: space-between;
+            }
+            margin-bottom: 10px;
+          }
+          .btn-checkout {
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 14px;
+          }
+          a {
+            text-decoration: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            &:hover {
+              color: rgb(243, 106, 52);
+            }
+          }
+          .method-payment {
+            border: 1px dotted #ccc;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 0 10px 20px 10px;
+            h3 {
+              margin: 0 auto;
+            }
+            .payment-contents {
+              display: flex;
+              align-items: center;
+              img {
+                width: 50px;
+                margin: 0 20px;
+              }
+            }
+          }
+          .term {
+            display: flex;
+            align-self: flex-start;
+            margin: 20px 0;
+          }
+        }
+      }
+    }
+  }
+}
+.input {
+  //   width: 100%;
+  //   height: 100px;
+  height: 10px;
+  border: 1px solid black;
+  flex: 1;
+  margin-left: 10px;
+}
+.btn-info {
+  background-color: rgb(0, 47, 255);
+}
+.btn {
+  height: 30px;
+  padding: 0;
+}
+// .price .price-new {
+//   color: var(--primary-color);
+//   font-weight: bold;
+// }
+.table-custom {
+  border: 1px solid #e8e8e8;
+  flex: 1;
+  font-size: 1.1rem;
+  color: var(--black-color);
+  tr:first-child {
+    background-color: #f2f2f2;
+  }
+  tr {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    td {
+      flex: 1;
+      &:first-child {
+        flex: 3;
+      }
+    }
+  }
+}

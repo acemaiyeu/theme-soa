@@ -1,0 +1,96 @@
+.btn-default + .btn-default {
+  margin-left: 10px;
+}
+.container-theme {
+  display: flex;
+  // flex-direction: column;
+  position: relative;
+  width: 100%;
+  .content-theme-header {
+    display: flex;
+    width: 100%;
+    margin: 5px 0;
+    .btn-default {
+      padding: 5px 10px 5px 5px;
+    }
+  }
+  hr {
+    border: 1px solid rgba(51, 51, 51, 0.1);
+    width: 100%;
+  }
+
+  .container-content-admin {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    .contents-admin {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      .body-content {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        .content-filter {
+          display: flex;
+          flex-direction: row;
+          width: 100%;
+          justify-content: space-between;
+          .search {
+            border: 1px solid #3333338c;
+            padding: 10px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            input {
+              border: none;
+              padding: 0;
+              //   height: 90%;
+              line-height: 2rem;
+              //   outline: 1px solid #333;
+              flex: 1;
+              font-size: 1.2rem;
+              margin: auto;
+              &:focus {
+                outline: none;
+              }
+            }
+            .search-icon {
+              font-size: 1.4rem;
+              margin-left: 10px;
+              //   border: 1px solid #333;
+              width: 30px;
+              &:hover {
+                color: var(--primary-color);
+                cursor: pointer;
+              }
+            }
+          }
+          .show-result {
+            font-size: 1.3rem;
+            select {
+              width: 50px;
+              font-size: 1.2rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.table {
+  width: 100%;
+  margin-top: 20px;
+  td {
+    img {
+      width: 100%;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(51, 51, 51, 0.1);
+    }
+    &:nth-child(2) {
+      width: 100px;
+    }
+  }
+}

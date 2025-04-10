@@ -14,9 +14,9 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: rgba(255, 255, 255, 0.6);
   min-height: 100vh;
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -35,4 +35,15 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* Admin */
+.container-admin {
+  display: flex;
+}
+.container-admin .nav-admin {
+  flex: 1;
+}
+.container-admin .content-admin {
+  flex: 3;
 }

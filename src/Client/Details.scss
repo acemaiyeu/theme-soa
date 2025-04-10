@@ -1,0 +1,189 @@
+.container-detail {
+  width: 1200px;
+  color: black;
+  margin: 0 auto;
+  display: flex;
+  background-color: white;
+  margin-top: 69px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+
+  .content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .content__item {
+      display: flex;
+      .left {
+        flex: 1;
+        border: 1px solid #e8e8e8;
+        padding: 10px;
+      }
+      .right {
+        flex: 1;
+        padding: 10px;
+        h4,
+        h3,
+        p {
+          text-align: left;
+          font-size: 1rem;
+        }
+        h3 {
+          font-size: 1.4rem;
+        }
+      }
+    }
+  }
+  .info {
+    width: 100%;
+    // background-color: red;
+    .slider {
+      // background-color: yellow;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      .slider-tab {
+        width: 100%;
+        display: flex;
+
+        .slider-tab-item {
+          width: 198px;
+          // background-color: #dddcdc;
+          font-size: 1.2rem;
+          padding: 12px 0;
+          &:hover {
+            box-shadow: 0 -1px 0 var(--primary-color);
+            cursor: pointer;
+          }
+        }
+      }
+      .slider-content {
+        width: 100%;
+        .container-rating {
+          width: 100%;
+          .rating {
+            width: 100%;
+            .stars {
+              width: 60%;
+              margin: 0 auto;
+
+              .title {
+                display: flex;
+                justify-content: flex-start;
+                font-size: 1.2rem;
+                font-weight: bold;
+              }
+              .list-star {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin: 0 auto;
+                .star {
+                  color: gray;
+                  cursor: pointer;
+                  &:hover {
+                    color: var(--primary-color);
+                  }
+                }
+              }
+            }
+            .comment {
+              width: 60%;
+              // border: 1px solid #e8e8e8;
+              margin: 0 auto;
+              position: relative;
+              .title {
+                font-size: 1.2rem;
+                display: flex;
+                justify-content: flex-start;
+                font-weight: bold;
+              }
+              .comment {
+                width: 100%;
+              }
+            }
+            .info-user {
+              width: 60%;
+              margin: 0 auto;
+              display: flex;
+              justify-content: space-between;
+              .username,
+              .email {
+                width: 45%;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                .label {
+                  font-size: 1.2rem;
+                  font-weight: bold;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+div.button {
+  width: 70%;
+  display: flex;
+  margin: 0 auto;
+  justify-content: space-around;
+  .btn-add-to-cart + .btn-add-to-cart {
+    margin-left: 10px;
+  }
+  .btn-add-to-cart {
+    width: 100%;
+    display: flex;
+    border: 1px solid rgba(232, 232, 2320.4);
+    height: 40px;
+    align-items: center;
+    padding: 0;
+    cursor: pointer;
+    .icon {
+      width: 55px;
+      background-color: whitesmoke;
+      &:hover {
+        color: #fb6445;
+      }
+    }
+    .button-add-to-cart {
+      flex: 1;
+      outline: none;
+      background-color: var(--primary-color);
+      border: none;
+      height: 100%;
+      &:hover {
+        background-color: #fb6445;
+      }
+    }
+  }
+}
+
+h4,
+h3,
+h2,
+h1,
+h5,
+h6 {
+  margin: 0;
+}
+.tab--active {
+  background-color: var(--primary-color);
+}
+.input {
+  width: 100%;
+  border: 1px solid #e8e8e8;
+  padding: 10px;
+  margin: 10px 0;
+  height: 30px;
+  border-radius: 5px;
+  outline: none;
+  font-size: 1rem;
+  color: black;
+}
+button:hover {
+  cursor: pointer;
+}

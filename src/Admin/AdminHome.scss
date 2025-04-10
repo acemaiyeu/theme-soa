@@ -1,0 +1,124 @@
+.content-admin {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+  //   overflow-y: auto;
+  // border: 1px solid red;
+  margin-right: 10px;
+  background-color: var(--primary-color);
+  // position: relative;
+  color: black;
+  .container-content-admin {
+    width: 100%;
+    height: 100%;
+    margin-top: 40px;
+    background-color: #fff;
+    z-index: 10;
+    border: 1px solid rgba(51, 51, 51, 0.4);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+    .header-admin {
+      font-size: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 0 10px;
+      margin: 10px 0;
+      border-left: 3px solid var(--primary-color);
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+      .info-header {
+        width: 300px;
+        display: flex;
+        margin: auto 0;
+        p {
+          margin: auto 0;
+        }
+      }
+    }
+    .contents-admin {
+      flex: 1;
+      display: flex;
+      // margin-top: 40px;
+      .content-info-container {
+        width: 95%;
+        margin: 0 auto;
+      }
+      .content-info {
+        flex: 1;
+      }
+      .content-chart {
+        flex: 1;
+      }
+    }
+  }
+  .bi-box-arrow-right {
+    // position: absolute;
+    // top: 0;
+    // right: 30px;
+    background-color: #ecf024;
+    color: black;
+    padding: 0 10px;
+    cursor: pointer;
+    &:hover {
+      background-color: #eef137;
+      color: var(--primary-color);
+    }
+  }
+}
+.--gb-green-opa-5 {
+  background-color: rgba(97, 250, 97, 0.4);
+  color: rgb(2, 189, 2);
+}
+.--gb-violet-opa-5 {
+  background-color: rgba(100, 97, 250, 0.4);
+  color: rgb(36, 2, 189);
+}
+.--gb-orange-opa-5 {
+  background-color: rgba(250, 196, 97, 0.4);
+  color: rgb(189, 92, 2);
+}
+.--gb-red-opa-5 {
+  background-color: rgba(250, 97, 97, 0.432);
+  color: rgb(189, 2, 2);
+}
+
+.table-custom {
+  width: 100%;
+  border: 1px solid #e8e8e8;
+  display: flex;
+  flex-direction: column;
+
+  thead {
+    background-color: #f2f2f2;
+  }
+  tbody,
+  thead {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin: 5px 0;
+    padding: 5px 0;
+    border-bottom: 1px solid #e8e8e8;
+    // text-align: left;
+  }
+}
+.w-10 {
+  width: 10%;
+}
+.w-20 {
+  width: 20%;
+}
+.--order-status-pending {
+  background-color: #6258f7;
+  color: #2115ca;
+}
+.--order-status-complete {
+  background-color: #58f772;
+  color: #15ca33;
+}
+.--order-status-cancel {
+  background-color: #f75d58;
+  color: #ca2115;
+}

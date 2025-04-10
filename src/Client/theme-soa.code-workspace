@@ -1,0 +1,16 @@
+{
+  "folders": [
+	{
+		"path": "../.."
+	},
+	{
+		"path": "E:/Downloads/bootstrap-icons-1.11.3/bootstrap-icons-1.11.3"
+	},
+	{
+		"path": "E:/Downloads/bootstrap-icons-1.11.3/bootstrap-icons-1.11.3/font"
+	}
+],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "theme-soa"
+  }
+}
