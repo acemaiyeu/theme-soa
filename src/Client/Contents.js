@@ -1,9 +1,12 @@
 import React from "react";
 import "./contents.scss";
 import { withRouter } from "react-router-dom";
+import axios from "axios";
+import { url_api_v0 } from "../config";
 class Contents extends React.Component {
   state = {
     description: { type: "description" },
+    listThemes: [],
   };
   isEmpty = (obj) => {
     for (var prop in obj) {
@@ -14,15 +17,21 @@ class Contents extends React.Component {
     return true;
   };
   handleDetail = (item) => {
-    console.log(item);
-    this.props.history.push(`/detail/${item.title}`);
+    this.props.history.push(`/detail/${item.title} - ${item.code}`);
+  };
+  componentDidMount = () => {
+    axios
+      .get(url_api_v0 + "themes")
+      .then((response) => {
+        this.setState({ listThemes: response.data });
+      })
+      .catch((error) => {
+        console.error("Có lỗi khi gọi API:", error);
+      });
   };
   render() {
-    let { listThemes } = this.props;
+    let listThemes = this.state.listThemes.data;
     // console.log(listThemes);
-    let { description } = this.state;
-    let isExistObject = this.isEmpty(description);
-
     return (
       <>
         <div className="contents">
@@ -41,26 +50,35 @@ class Contents extends React.Component {
                       </div>
                       <div className="content-item-text">
                         <h3>{item.title}</h3>
-                        <p>{item.content}</p>
+
                         <span className="price">
-                          <p className="price-old">
-                            {item.price_old.toLocaleString("vi-VN")} đ
-                          </p>
-                          <p className="price-new">
-                            {item.price.toLocaleString("vi-VN")} đ
-                          </p>
+                          {item.price_old > 0 && (
+                            <p className="price-old">{item.price_old_text} </p>
+                          )}
+
+                          <p className="price-new">{item.price_text}</p>
                         </span>
                       </div>
                       <div className="content-item-info">
                         <span>Framework: {item.framework}</span>
-                        <span>Thư viện: {item.dependencies}</span>
+                        <span>Thư viện: {item.short_description}</span>
                       </div>
-                      <div className="content-item-btn">
+                      {/* <div className="content-item-btn">
                         <button
-                          className="btn btn-minium"
+                          className="btn-default --btn-custom btn-bg-orange-op-5"
                           onClick={() => this.handleDetail(item)}
                         >
-                          Xem chi tiết
+                          #123456 <i className="bi bi-arrow-right-short"></i>{" "}
+                          Chi tiết
+                        </button>
+                      </div> */}
+                      <div className="content-item-modal">
+                        <button
+                          className="btn-default --btn-custom btn-bg-orange-op-5"
+                          onClick={() => this.handleDetail(item)}
+                        >
+                          #123456 <i className="bi bi-arrow-right-short"></i>{" "}
+                          XEM CHI TIẾT
                         </button>
                       </div>
                     </div>

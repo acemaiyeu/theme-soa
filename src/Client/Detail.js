@@ -1,13 +1,55 @@
 import React from "react";
 import "./Details.scss";
+import { addToCart } from "./CartFunctions";
+import { url_api_v0 } from "../config";
+import parse from "html-react-parser";
+import axios from "axios";
 // import "./Home.scss";
 class Detail extends React.Component {
   state = {
-    description: { type: "rating" },
+    description: { type: "description" },
   };
   handleDescription = (type) => {
     this.setState({ description: { type } });
   };
+  handleAddToCart = (theme_id) => {
+    addToCart(theme_id);
+    this.getCart();
+  };
+  getCart = () => {
+    axios
+      .get(url_api_v0 + "cart?session_id=" + localStorage.getItem("sessionId"))
+
+      .then((response) => {
+        this.setState({
+          cart: response.data,
+        });
+
+        localStorage.setItem("cart", JSON.stringify(response.data));
+        if (Array.isArray(response.data?.data)) {
+          this.setState({
+            cart: null,
+          });
+          localStorage.removeItem("cart");
+          this.props.history.push("/");
+        }
+      })
+      .catch((error) => {
+        console.error("Có lỗi khi gọi API get Cart:", error);
+      });
+  };
+  getDetail = () => {
+    let { path } = this.props.match.params;
+    let theme_code = path.replace("-", "           ").slice(-15).trim();
+
+    axios
+      .get(url_api_v0 + "theme/" + theme_code)
+      .then((response) => {})
+      .catch((error) => {});
+  };
+  componentDidMount() {
+    // this.getDetail();
+  }
   render() {
     let { description } = this.state;
     return (
@@ -17,7 +59,10 @@ class Detail extends React.Component {
             <div className="content__item">
               <div className="left">
                 <div className="img">
-                  <img src="https://media.istockphoto.com/id/1177199065/photo/african-lion-and-night-in-africa-banner-savannah-landscape-theme-king-of-animals-proud.jpg?s=612x612&w=0&k=20&c=I6zG27ksq2_4rBjLCN8kQMuiBysPA_rnfurxbGsP8BE="></img>
+                  <img
+                    alt="img"
+                    src="https://media.istockphoto.com/id/1177199065/photo/african-lion-and-night-in-africa-banner-savannah-landscape-theme-king-of-animals-proud.jpg?s=612x612&w=0&k=20&c=I6zG27ksq2_4rBjLCN8kQMuiBysPA_rnfurxbGsP8BE="
+                  ></img>
                 </div>
                 <div className="text"></div>
               </div>
@@ -52,7 +97,10 @@ class Detail extends React.Component {
                     <div className="icon">
                       <i className="bi bi-cart-plus"></i>
                     </div>
-                    <button className="button-add-to-cart">
+                    <button
+                      className="button-add-to-cart"
+                      onClick={() => this.handleAddToCart(1)}
+                    >
                       Thêm vào giỏ hàng
                     </button>
                   </div>
@@ -89,10 +137,10 @@ class Detail extends React.Component {
                   </div>
                 </div>
                 <div className="slider-content">
-                  {description.type == "description" && (
+                  {description.type === "description" && (
                     <span>Đây là phần mô tả</span>
                   )}
-                  {description.type == "rating" && (
+                  {description.type === "rating" && (
                     <div className="container-rating">
                       <h5>Hãy là người đầu tiên nhận xét </h5>
                       <div className="rating">
@@ -149,7 +197,7 @@ class Detail extends React.Component {
                       </div>
                     </div>
                   )}
-                  {description.type == "used" && (
+                  {description.type === "used" && (
                     <p>Đây là phần hướng dẫn cài đặt</p>
                   )}
                 </div>

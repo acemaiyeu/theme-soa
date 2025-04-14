@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./NavAdmin.scss";
 import "./bootstrapa.css";
+import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 class NavAdmin extends React.Component {
   render() {
     return (
@@ -13,7 +14,12 @@ class NavAdmin extends React.Component {
               alt="avatar"
             />
             <h3>Admin</h3>
-            <h4>Quản lý đơn hàng</h4>
+            <h4>Quản trị viên</h4>
+            <hr className="hr-w-90" />
+            <i
+              className="bi bi-house-door home-icon"
+              onClick={() => this.props.history.push("/admin")}
+            ></i>
           </div>
           <hr className="hr-w-90" />
 
@@ -22,7 +28,7 @@ class NavAdmin extends React.Component {
               <ul className="navbar-admin">
                 <li className="nav-item">
                   <Link
-                    to="/admin"
+                    to="/admin/orders"
                     className="nav-link active"
                     aria-current="page"
                   >
@@ -31,7 +37,7 @@ class NavAdmin extends React.Component {
                 </li>
                 <li className="nav-item">
                   <Link
-                    to="/admin/product"
+                    to="/admin/discounts"
                     className="nav-link active"
                     aria-current="page"
                   >
@@ -66,4 +72,4 @@ class NavAdmin extends React.Component {
   }
 }
 
-export default NavAdmin;
+export default withRouter(NavAdmin);

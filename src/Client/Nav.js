@@ -1,11 +1,27 @@
 import React from "react";
-import logo from "../../src/assets/images/logo.png";
 import "./Nav.scss";
 import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
-
+import { url_api_v0 } from "../config";
+import axios from "axios";
+import ModalCart from "./ModalCart";
+import BoxNumber from "./BoxNumber";
+import icon_laravel from "../../src/assets/images/Laravel-Logo.wine.png";
+import icon_spring from "../../src/assets/images/Spring_Boot.svg.png";
+import icon_swing from "../../src/assets/images/javaSwwing.png";
+import icon_smart_phone from "../../src/assets/images/smart_phone_icon.png";
+import icon_food from "../../src/assets/images/food_icon.png";
+import icon_noi_that from "../../src/assets/images/noi_that-icon.png";
+import icon_fashion from "../../src/assets/images/fashion_icon.png";
+import icon_sqlserver from "../../src/assets/images/sql-server.png";
+import icon_mysql from "../../src/assets/images/MySQL-Logo.png";
+import huongdan_icon from "../../src/assets/images/huongdan_icon.png";
+import found_icon from "../../src/assets/images/found_icon.webp";
+import question_icon from "../../src/assets/images/qyuestion_icon.png";
+import q_a_icon from "../../src/assets/images/qa.png";
 class Nav extends React.Component {
   state = {
     isSearch: false,
+    cart: { data: null },
   };
   handleSearch = (event) => {
     console.log(event.target.className);
@@ -17,6 +33,66 @@ class Nav extends React.Component {
   handleCart = (e) => {
     this.props.history.push("/cart");
   };
+  generateSessionId = () => {
+    return crypto.randomUUID();
+  };
+  backtoHome = () => {
+    this.props.history.push("/");
+  };
+  getSessionId = () => {
+    axios
+      .get(url_api_v0 + "sessions")
+      .then((response) => {
+        this.setState({ sessions: response.data });
+        if (response.data.data.session_id === "") {
+          let sessionId = this.generateSessionId();
+          axios
+            .post(url_api_v0 + "sessions", {
+              session_id: sessionId,
+            })
+            .then((response) => {
+              this.setState({ sessions: response });
+            })
+            .catch((error) => {
+              console.error("Có lỗi khi gọi API:", error);
+            });
+          localStorage.setItem("sessionId", sessionId);
+          return;
+        }
+        localStorage.setItem("sessionId", response.data.data.session_id);
+      })
+      .catch((error) => {
+        console.error("Có lỗi khi gọi API:", error);
+      });
+  };
+  getCart = () => {
+    axios
+      .get(url_api_v0 + "cart?session_id=" + localStorage.getItem("sessionId"))
+
+      .then((response) => {
+        this.setState({
+          cart: response.data,
+        });
+
+        localStorage.setItem("cart", JSON.stringify(response.data));
+        if (Array.isArray(response.data?.data)) {
+          this.setState({
+            cart: null,
+          });
+          localStorage.removeItem("cart");
+          this.props.history.push("/");
+        }
+      })
+      .catch((error) => {
+        console.error("Có lỗi khi gọi API get Cart:", error);
+      });
+  };
+  componentDidMount = () => {
+    this.getSessionId();
+    // if (this.state.cart !== null) {
+    this.getCart();
+    // }
+  };
   render() {
     let { isSearch } = this.state;
     return (
@@ -24,1194 +100,432 @@ class Nav extends React.Component {
         <div className="container">
           <div className="container-item">
             <nav className="navbar">
-              <div className="logo">
-                <img src={logo} alt="" />
+              <div className="logo" onClick={() => this.backtoHome()}>
+                {/* <img src={logo} alt="" /> */}
+                <i className="bi bi-house-door"></i>
               </div>
-              {/* <div className="nav-category">
-                <i className="bi bi-justify"></i> Danh mục sản phẩm
-                <ul className="navbar-list">
-                  <li className="navbar-item">
-                    <span className="navbar-item-new-theme">Theme mới</span>
-                    <i className="bi bi-chevron-down"></i>
-                    <div className="theme-new-box">
-                      <ul className="theme-new-list">
-                        <li className="theme-new-item --header ">
-                          THEME BÁN HÀNG
-                        </li>
-                        <li className="theme-new-item --laravel">
-                          Theme Laravel
-                          <div className="theme-new-box-laravel">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Laravel thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --spring">
-                          Theme SpringBoot
-                          <div className="theme-new-box-spring">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Spring thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --swing">
-                          Theme JavaSwing
-                          <div className="theme-new-box-swing">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme JavaSwing thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing công nghệ
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing thực phẩm
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                      </ul>
-                      <ul className="theme-new-list">
-                        <li className="theme-new-item --header ">
-                          THEME GIỚI THIỆU
-                        </li>
-                        <li className="theme-new-item --laravel">
-                          Theme Laravel
-                          <div className="theme-new-box-laravel">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Laravel thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --spring">
-                          Theme SpringBoot
-                          <div className="theme-new-box-spring">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Spring thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --swing">
-                          Theme JavaSwing
-                          <div className="theme-new-box-swing">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme JavaSwing thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing công nghệ
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing thực phẩm
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li className="navbar-item">
-                    <span className="navbar-item-new-theme">Theme giá rẻ</span>
-                    <i className="bi bi-chevron-down"></i>
-                    <div className="theme-new-box">
-                      <ul className="theme-new-list">
-                        <li className="theme-new-item --header ">
-                          THEME BÁN HÀNG
-                        </li>
-                        <li className="theme-new-item --laravel">
-                          Theme Laravel
-                          <div className="theme-new-box-laravel">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Laravel thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --spring">
-                          Theme SpringBoot
-                          <div className="theme-new-box-spring">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Spring thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --swing">
-                          Theme JavaSwing
-                          <div className="theme-new-box-swing">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme JavaSwing thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing công nghệ
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing thực phẩm
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                      </ul>
-                      <ul className="theme-new-list">
-                        <li className="theme-new-item --header ">
-                          THEME GIỚI THIỆU
-                        </li>
-                        <li className="theme-new-item --laravel">
-                          Theme Laravel
-                          <div className="theme-new-box-laravel">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Laravel thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --spring">
-                          Theme SpringBoot
-                          <div className="theme-new-box-spring">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Spring thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --swing">
-                          Theme JavaSwing
-                          <div className="theme-new-box-swing">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme JavaSwing thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing công nghệ
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing thực phẩm
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                      </ul>
-                      <ul className="theme-new-list">
-                        <li className="theme-new-item --header ">
-                          THEME BÁN HÀNG
-                        </li>
-                        <li className="theme-new-item --laravel">
-                          Theme Laravel
-                          <div className="theme-new-box-laravel">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Laravel thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --spring">
-                          Theme SpringBoot
-                          <div className="theme-new-box-spring">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Spring thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --swing">
-                          Theme JavaSwing
-                          <div className="theme-new-box-swing">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme JavaSwing thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing công nghệ
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing thực phẩm
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li className="navbar-item">
-                    <span className="navbar-item-new-theme">Dịch vụ khác</span>
-                    <i className="bi bi-chevron-down"></i>
-                    <div className="theme-new-box">
-                      <ul className="theme-new-list">
-                        <li className="theme-new-item --header ">API</li>
-                        <li className="theme-new-item --laravel">
-                          Theme Laravel
-                          <div className="theme-new-box-laravel">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Project API thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Project API nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Project API thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Project API công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                      </ul>
-                      <ul className="theme-new-list">
-                        <li className="theme-new-item --header ">
-                          CẤU TRÚC DATABASE
-                        </li>
-                        <li className="theme-new-item --laravel">
-                          MYSQL
-                          <div className="theme-new-box-laravel">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Cấu trúc mysql thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Cấu trúc mysql nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Cấu trúc mysql thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Cấu trúc mysql công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --spring">
-                          SQL Server
-                          <div className="theme-new-box-spring">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Cấu trúc SQL Server thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Cấu trúc SQL Server nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Cấu trúc SQL Server công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li className="navbar-item">
-                    <span className="navbar-item-new-theme">Hỗ trợ</span>
-                    <i className="bi bi-chevron-down"></i>
-                    <div className="theme-new-box">
-                      <ul className="theme-new-list">
-                        <li className="theme-new-item ">
-                          Hướng dẫn đặt hàng và thanh toán
-                        </li>
-                        <li className="theme-new-item --laravel">
-                          Câu hỏi thường gặp
-                        </li>
-                        <li className="theme-new-item --spring">
-                          Tra cứu vận đơn
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                </ul>
-              </div> */}
+
               <div className="nav-category">
                 <ul className="nav-left">
                   <li>
-                    Theme mới
+                    THEME MỚI
+                    <div className="theme-new-box">
+                      <ul className="theme-new-list">
+                        <li className="theme-new-item --header ">
+                          <div className="icon-item">
+                            <img
+                              src={icon_laravel}
+                              className="icon-img"
+                              alt="Laravel"
+                            />
+                          </div>
+                          LARAVEL
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_fashion}
+                              className="icon-img"
+                              alt="icon-fashion"
+                            />
+                          </div>
+                          Theme Laravel thời trang
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_noi_that}
+                              className="icon-img"
+                              alt="icon-furniture"
+                            />
+                          </div>
+                          Theme Laravel nội thất
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_food}
+                              className="icon-img"
+                              alt="icon-food"
+                            />
+                          </div>
+                          Theme Laravel thực phẩm
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_smart_phone}
+                              className="icon-img"
+                              alt="icon-teachnology"
+                            />
+                          </div>
+                          Theme Laravel công nghệ
+                        </li>
+                      </ul>
+                      <ul className="theme-new-list">
+                        <li className="theme-new-item --header ">
+                          <div className="icon-item">
+                            <img
+                              className="icon-img"
+                              src={icon_spring}
+                              alt="springboot"
+                            />
+                          </div>
+                          SPRINGBOOT
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              className="icon-img"
+                              src={icon_fashion}
+                              alt="icon-fashion"
+                            />
+                          </div>
+                          Theme Laravel thời trang
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              className="icon-img"
+                              src={icon_noi_that}
+                              alt="icon-furniture"
+                            />
+                          </div>
+                          Theme Laravel nội thất
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_food}
+                              className="icon-img"
+                              alt="icon-food"
+                            />
+                          </div>
+                          Theme Laravel thực phẩm
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_smart_phone}
+                              className="icon-img"
+                              alt="icon-teachnology"
+                            />
+                          </div>
+                          Theme Laravel công nghệ
+                        </li>
+                      </ul>
+                      <ul className="theme-new-list">
+                        <li className="theme-new-item --header ">
+                          <div className="icon-item">
+                            <img
+                              src={icon_swing}
+                              className="icon-img"
+                              alt="java-swing"
+                            />
+                          </div>
+                          JAVA SWING
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_fashion}
+                              className="icon-img"
+                              alt="icon-fashion"
+                            />
+                          </div>
+                          Theme Laravel thời trang
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_noi_that}
+                              className="icon-img"
+                              alt="icon-furniture"
+                            />
+                          </div>
+                          Theme Laravel nội thất
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_food}
+                              className="icon-img"
+                              alt="icon-food"
+                            />
+                          </div>
+                          Theme Laravel thực phẩm
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_smart_phone}
+                              className="icon-img"
+                              alt="icon-teachnology"
+                            />
+                          </div>
+                          Theme Laravel công nghệ
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li>
+                    THEME GIÁ RẺ
+                    <div className="theme-new-box">
+                      <ul className="theme-new-list">
+                        <li className="theme-new-item --header ">
+                          <div className="icon-item">
+                            <img
+                              src={icon_laravel}
+                              className="icon-img"
+                              alt="Laravel"
+                            />
+                          </div>
+                          LARAVEL
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_fashion}
+                              className="icon-img"
+                              alt="icon-fashion"
+                            />
+                          </div>
+                          Theme Laravel thời trang
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_noi_that}
+                              className="icon-img"
+                              alt="icon-furniture"
+                            />
+                          </div>
+                          Theme Laravel nội thất
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_food}
+                              className="icon-img"
+                              alt="icon-food"
+                            />
+                          </div>
+                          Theme Laravel thực phẩm
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_smart_phone}
+                              className="icon-img"
+                              alt="icon-teachnology"
+                            />
+                          </div>
+                          Theme Laravel công nghệ
+                        </li>
+                      </ul>
+                      <ul className="theme-new-list">
+                        <li className="theme-new-item --header ">
+                          <div className="icon-item">
+                            <img
+                              src={icon_spring}
+                              className="icon-img"
+                              alt="springboot"
+                            />
+                          </div>
+                          SPRINGBOOT
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_fashion}
+                              className="icon-img"
+                              alt="icon-fashion"
+                            />
+                          </div>
+                          Theme Laravel thời trang
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_noi_that}
+                              className="icon-img"
+                              alt="icon-furniture"
+                            />
+                          </div>
+                          Theme Laravel nội thất
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_food}
+                              className="icon-img"
+                              alt="icon-food"
+                            />
+                          </div>
+                          Theme Laravel thực phẩm
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_smart_phone}
+                              className="icon-img"
+                              alt="icon-teachnology"
+                            />
+                          </div>
+                          Theme Laravel công nghệ
+                        </li>
+                      </ul>
+                      <ul className="theme-new-list">
+                        <li className="theme-new-item --header ">
+                          <div className="icon-item">
+                            <img
+                              src={icon_swing}
+                              className="icon-img"
+                              alt="java-swing"
+                            />
+                          </div>
+                          JAVA SWING
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_fashion}
+                              className="icon-img"
+                              alt="icon-fashion"
+                            />
+                          </div>
+                          Theme Laravel thời trang
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_noi_that}
+                              className="icon-img"
+                              alt="icon-furniture"
+                            />
+                          </div>
+                          Theme Laravel nội thất
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_food}
+                              className="icon-img"
+                              alt="icon-food"
+                            />
+                          </div>
+                          Theme Laravel thực phẩm
+                        </li>
+                        <li className="theme-new-item">
+                          <div className="icon-item">
+                            <img
+                              src={icon_smart_phone}
+                              className="icon-img"
+                              alt="icon-teachnology"
+                            />
+                          </div>
+                          Theme Laravel công nghệ
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li style={{ position: "relative" }}>
+                    DATABASE
+                    <div className="container-modal-customer">
+                      <ul className="modal-list-customer">
+                        <li className="modal-item-customer">
+                          <img
+                            src={icon_mysql}
+                            alt="mysql-icon"
+                            className="icon-img"
+                          />
+                          <a href="#">MYSQL</a>
+                        </li>
+                        <li className="modal-item-customer">
+                          <img
+                            src={icon_sqlserver}
+                            className="icon-img"
+                            alt="sql-server-icon"
+                          />
+                          <a href="#">SQL SERVER</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li style={{ position: "relative" }}>
+                    BACKEND API
+                    <div className="container-modal-customer">
+                      <ul className="modal-list-customer">
+                        <li className="modal-item-customer">
+                          <img
+                            src={icon_laravel}
+                            className="icon-img"
+                            alt="laravel-icon"
+                          />
+                          <a href="#">LARAVEL PROJECT API</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li>BÀI VIẾT</li>
+                  <li style={{ position: "relative" }}>
+                    HỖ TRỢ
                     {/* <div className="theme-new-box">
                       <ul className="theme-new-list">
-                        <li className="theme-new-item --header ">
-                          THEME BÁN HÀNG
+                        <li className="theme-new-item">
+                          Hướng dẫn đặt hàng và thanh toán
                         </li>
-                        <li className="theme-new-item --laravel">
-                          Theme Laravel
-                          <div className="theme-new-box-laravel">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Laravel thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --spring">
-                          Theme SpringBoot
-                          <div className="theme-new-box-spring">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Spring thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --swing">
-                          Theme JavaSwing
-                          <div className="theme-new-box-swing">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme JavaSwing thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing công nghệ
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing thực phẩm
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                      </ul>
-                      <ul className="theme-new-list">
-                        <li className="theme-new-item --header ">
-                          THEME GIỚI THIỆU
-                        </li>
-                        <li className="theme-new-item --laravel">
-                          Theme Laravel
-                          <div className="theme-new-box-laravel">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Laravel thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --spring">
-                          Theme SpringBoot
-                          <div className="theme-new-box-spring">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Spring thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --swing">
-                          Theme JavaSwing
-                          <div className="theme-new-box-swing">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme JavaSwing thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing công nghệ
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing thực phẩm
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
+                        <li className="theme-new-item ">Cài demo</li>
+                        <li className="theme-new-item">Câu hỏi thường gặp</li>
+                        <li className="theme-new-item">Tra cứu vận đơn</li>
                       </ul>
                     </div> */}
-                    <div className="theme-new-box">
-                      <ul className="theme-new-list">
-                        <li className="theme-new-item --header ">
-                          THEME BÁN HÀNG
-                        </li>
-                        <li className="theme-new-item --laravel">
-                          Theme Laravel
-                          <div className="theme-new-box-laravel">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Laravel thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel công nghệ
-                              </li>
-                            </ul>
+                    <div className="container-modal-customer">
+                      <ul className="modal-list-customer">
+                        <li className="modal-item-customer">
+                          <div className="img">
+                            <img
+                              src={huongdan_icon}
+                              className="icon-img"
+                              alt="huongdan-icon"
+                            />
                           </div>
+                          <a href="#">Hướng dẫn đặt hàng và thanh toán</a>
                         </li>
-                        <li className="theme-new-item --spring">
-                          Theme SpringBoot
-                          <div className="theme-new-box-spring">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Spring thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring công nghệ
-                              </li>
-                            </ul>
+                        <li className="modal-item-customer">
+                          <div className="img">
+                            <img
+                              src={question_icon}
+                              className="icon-img"
+                              alt="question-icon"
+                            />
                           </div>
+                          <a href="#">Câu hỏi thường gặp</a>
                         </li>
-                        <li className="theme-new-item --swing">
-                          Theme JavaSwing
-                          <div className="theme-new-box-swing">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme JavaSwing thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing công nghệ
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing thực phẩm
-                              </li>
-                            </ul>
+                        <li className="modal-item-customer">
+                          <div className="img">
+                            <img
+                              src={found_icon}
+                              className="icon-img"
+                              alt="found-icon"
+                            />
                           </div>
+                          <a href="#">Tra cứu vận đơn</a>
                         </li>
-                      </ul>
-                      <ul className="theme-new-list">
-                        <li className="theme-new-item --header ">
-                          THEME GIỚI THIỆU
-                        </li>
-                        <li className="theme-new-item --laravel">
-                          Theme Laravel
-                          <div className="theme-new-box-laravel">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Laravel thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel công nghệ
-                              </li>
-                            </ul>
+                        <li className="modal-item-customer">
+                          <div className="img">
+                            <img
+                              src={q_a_icon}
+                              className="icon-img"
+                              alt="q_a_icon"
+                            />
                           </div>
-                        </li>
-                        <li className="theme-new-item --spring">
-                          Theme SpringBoot
-                          <div className="theme-new-box-spring">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Spring thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --swing">
-                          Theme JavaSwing
-                          <div className="theme-new-box-swing">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme JavaSwing thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing công nghệ
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing thực phẩm
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li>
-                    Theme giá rẻ
-                    <div className="theme-new-box">
-                      <ul className="theme-new-list">
-                        <li className="theme-new-item --header ">
-                          THEME BÁN HÀNG
-                        </li>
-                        <li className="theme-new-item --laravel">
-                          Theme Laravel
-                          <div className="theme-new-box-laravel">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Laravel thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --spring">
-                          Theme SpringBoot
-                          <div className="theme-new-box-spring">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Spring thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --swing">
-                          Theme JavaSwing
-                          <div className="theme-new-box-swing">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme JavaSwing thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing công nghệ
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing thực phẩm
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                      </ul>
-                      <ul className="theme-new-list">
-                        <li className="theme-new-item --header ">
-                          THEME GIỚI THIỆU
-                        </li>
-                        <li className="theme-new-item --laravel">
-                          Theme Laravel
-                          <div className="theme-new-box-laravel">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Laravel thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --spring">
-                          Theme SpringBoot
-                          <div className="theme-new-box-spring">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Spring thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --swing">
-                          Theme JavaSwing
-                          <div className="theme-new-box-swing">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme JavaSwing thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing công nghệ
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing thực phẩm
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li>
-                    Database
-                    <div className="theme-new-box">
-                      <ul className="theme-new-list">
-                        <li className="theme-new-item --header ">
-                          THEME BÁN HÀNG
-                        </li>
-                        <li className="theme-new-item --laravel">
-                          Theme Laravel
-                          <div className="theme-new-box-laravel">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Laravel thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --spring">
-                          Theme SpringBoot
-                          <div className="theme-new-box-spring">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Spring thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --swing">
-                          Theme JavaSwing
-                          <div className="theme-new-box-swing">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme JavaSwing thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing công nghệ
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing thực phẩm
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                      </ul>
-                      <ul className="theme-new-list">
-                        <li className="theme-new-item --header ">
-                          THEME GIỚI THIỆU
-                        </li>
-                        <li className="theme-new-item --laravel">
-                          Theme Laravel
-                          <div className="theme-new-box-laravel">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Laravel thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --spring">
-                          Theme SpringBoot
-                          <div className="theme-new-box-spring">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Spring thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --swing">
-                          Theme JavaSwing
-                          <div className="theme-new-box-swing">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme JavaSwing thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing công nghệ
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing thực phẩm
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li>
-                    Api backend
-                    <div className="theme-new-box">
-                      <ul className="theme-new-list">
-                        <li className="theme-new-item --header ">
-                          THEME BÁN HÀNG
-                        </li>
-                        <li className="theme-new-item --laravel">
-                          Theme Laravel
-                          <div className="theme-new-box-laravel">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Laravel thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --spring">
-                          Theme SpringBoot
-                          <div className="theme-new-box-spring">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Spring thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --swing">
-                          Theme JavaSwing
-                          <div className="theme-new-box-swing">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme JavaSwing thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing công nghệ
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing thực phẩm
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                      </ul>
-                      <ul className="theme-new-list">
-                        <li className="theme-new-item --header ">
-                          THEME GIỚI THIỆU
-                        </li>
-                        <li className="theme-new-item --laravel">
-                          Theme Laravel
-                          <div className="theme-new-box-laravel">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Laravel thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --spring">
-                          Theme SpringBoot
-                          <div className="theme-new-box-spring">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Spring thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --swing">
-                          Theme JavaSwing
-                          <div className="theme-new-box-swing">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme JavaSwing thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing công nghệ
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing thực phẩm
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li>Bài viết</li>
-                  <li>
-                    Hỗ trợ
-                    <div className="theme-new-box">
-                      <ul className="theme-new-list">
-                        <li className="theme-new-item --header ">
-                          THEME BÁN HÀNG
-                        </li>
-                        <li className="theme-new-item --laravel">
-                          Theme Laravel
-                          <div className="theme-new-box-laravel">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Laravel thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --spring">
-                          Theme SpringBoot
-                          <div className="theme-new-box-spring">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Spring thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --swing">
-                          Theme JavaSwing
-                          <div className="theme-new-box-swing">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme JavaSwing thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing công nghệ
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing thực phẩm
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                      </ul>
-                      <ul className="theme-new-list">
-                        <li className="theme-new-item --header ">
-                          THEME GIỚI THIỆU
-                        </li>
-                        <li className="theme-new-item --laravel">
-                          Theme Laravel
-                          <div className="theme-new-box-laravel">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Laravel thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Laravel công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --spring">
-                          Theme SpringBoot
-                          <div className="theme-new-box-spring">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme Spring thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring thực phẩm
-                              </li>
-                              <li className="theme-new-item">
-                                Theme Spring công nghệ
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="theme-new-item --swing">
-                          Theme JavaSwing
-                          <div className="theme-new-box-swing">
-                            <ul className="theme-new-list">
-                              <li className="theme-new-item">
-                                Theme JavaSwing thời trang
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing nội thất
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing công nghệ
-                              </li>
-                              <li className="theme-new-item">
-                                Theme JavaSwing thực phẩm
-                              </li>
-                            </ul>
-                          </div>
+                          <a
+                            href="#"
+                            title="Thông tin trả lời sẽ được cập nhật vào thông báo của bạn"
+                          >
+                            Đặt câu hỏi
+                          </a>
                         </li>
                       </ul>
                     </div>
@@ -1224,12 +538,28 @@ class Nav extends React.Component {
                       onClick={(e) => this.handleSearch(e)}
                     ></i>
                   </li>
+                  <li>
+                    <i class="bi bi-bell"></i>
+                  </li>
+                  <li>
+                    <i class="bi bi-person"></i>
+                  </li>
+                  <li>
+                    <div>Đăng nhập</div>
+                  </li>
                   {/* <li className="login">
                     <div>Đăng ký</div>
                     <div>Đăng nhập</div>
                   </li> */}
                   <li className="cart" onClick={(e) => this.handleCart(e)}>
                     <i className="bi bi-cart"></i>
+                    <ModalCart
+                      cart={this.state.cart?.data}
+                      cart_details={this.state.cart?.data?.details ?? []}
+                    />
+                    <BoxNumber
+                      number={this.state.cart?.data?.details?.length ?? 0}
+                    />
                   </li>
                 </ul>
               </div>
@@ -1258,8 +588,11 @@ class Nav extends React.Component {
                 className="search-input"
                 placeholder="Tìm kiếm"
               />
-              <button type="button" className="btn">
-                <i className="bi bi-search modal"></i>
+              <button
+                type="button"
+                className="btn-default btn-bg-orange-op-5 btn-pad-30"
+              >
+                <i className="bi bi-search"></i>
               </button>
             </div>
           </div>

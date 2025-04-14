@@ -1,0 +1,70 @@
+// body {
+//   background: #fff3e0;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   height: 100vh;
+//   margin: 0;
+//   font-family: "Arial", sans-serif;
+// }
+.box-login {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  background-image: url("https://bestprint.vn/wp-content/uploads/2022/02/Gradient_builder_2.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.login-container {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+  height: 400px;
+}
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #ff6f00;
+}
+.login-container input[type="text"],
+.login-container input[type="password"] {
+  width: 100%;
+  padding: 12px 15px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+.login-container button {
+  width: 100%;
+  padding: 12px;
+  background-color: #ff6f00;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.login-container button:hover {
+  background-color: #e65100;
+}
+.login-container .forgot {
+  display: block;
+  text-align: center;
+  margin-top: 15px;
+  color: #ff6f00;
+  text-decoration: none;
+  font-size: 14px;
+}
+.login-container .forgot:hover {
+  text-decoration: underline;
+}

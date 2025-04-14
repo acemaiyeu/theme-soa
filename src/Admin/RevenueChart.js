@@ -1,8 +1,13 @@
 // src/components/RevenueChart.jsx
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
+import { url_api_v1 } from "../config";
 
 const RevenueChart = () => {
+  const [state, setState] = useState({
+    data: [400, 400, 400, 400, 400, 500],
+  });
   const chartOptions = {
     chart: {
       type: "bar",
@@ -40,9 +45,37 @@ const RevenueChart = () => {
   const chartSeries = [
     {
       name: "Doanh thu",
-      data: [120, 200, 150, 300, 250, 400],
+      data: state.data,
     },
   ];
+
+  const getData = async () => {
+    try {
+      const response = await axios.get(url_api_v1 + "statistics-orders-fits", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("admin_token"),
+        },
+      });
+      const orderDataTemp = response.data;
+      const chartData = orderDataTemp.map((item) =>
+        parseInt(item.replace(/,/g, ""), 10)
+      );
+      for (let i = 0; i < chartData.length; i++) {
+        chartSeries[0].data[i] = chartData[i];
+      }
+
+      chartSeries[0].data = chartData;
+
+      console.log("chartSeries", chartSeries);
+    } catch (error) {
+      console.log("Loi goi api theme", error);
+    }
+  };
+  useEffect(() => {
+    // Code ở đây chạy đúng 1 lần như componentDidMount
+
+    getData();
+  }, []); // <-- Quan trọng: [] trống!
 
   return (
     <div

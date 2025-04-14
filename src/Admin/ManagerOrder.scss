@@ -1,0 +1,30 @@
+.order-filter-container {
+  width: 100%;
+  display: flex;
+
+  .order-filter {
+    display: flex;
+    border: 1px solid #ccc;
+    padding: 2px 0;
+    margin: 0;
+    border-radius: 6px;
+    align-items: center;
+    // button: ;
+    .input {
+      border: none;
+      font-size: 1.8rem;
+      padding: 0 10px;
+      margin: 0;
+    }
+    .btn-default {
+      margin: 10px 10px;
+      padding: 0 20px;
+    }
+    select {
+      font-size: 1.6rem;
+      padding: 0 10px;
+      height: 30px;
+      border: 1px solid rgba(226, 223, 223, 0.705);
+    }
+  }
+}

@@ -1,0 +1,23 @@
+.box-number {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  font-weight: 900;
+  color: var(--primary-color);
+  font-size: 1rem;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  // transform: translateX(-50%);
+  p {
+    margin: 0;
+  }
+}
