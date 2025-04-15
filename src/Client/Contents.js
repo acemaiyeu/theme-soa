@@ -52,9 +52,9 @@ class Contents extends React.Component {
                         <h3>{item.title}</h3>
 
                         <span className="price">
-                          {item.price_old > 0 && (
-                            <p className="price-old">{item.price_old_text} </p>
-                          )}
+                          {/* {item.price_old = 1 && item.price_old > 0 && ( */}
+                          <p className="price-old">{item.price_text} </p>
+                          {/* )} */}
 
                           <p className="price-new">{item.price_text}</p>
                         </span>
@@ -73,11 +73,22 @@ class Contents extends React.Component {
                         </button>
                       </div> */}
                       <div className="content-item-modal">
+                        <div className="content-item-modal-header">
+                          <p>- Responsive: {item.responsive}</p>
+                          {item.gifts &&
+                            item.gifts.details &&
+                            item.gifts.details.length > 0 &&
+                            item.gifts.details.map((gift, index) => {
+                              return <p key={gift.id}> - {gift.title}</p>;
+                            })}
+                        </div>
                         <button
                           className="btn-default --btn-custom btn-bg-orange-op-5"
                           onClick={() => this.handleDetail(item)}
                         >
-                          #123456 <i className="bi bi-arrow-right-short"></i>{" "}
+                          <span className="content-item-code">
+                            #123456 <i className="bi bi-arrow-right-short"></i>
+                          </span>
                           XEM CHI TIẾT
                         </button>
                       </div>

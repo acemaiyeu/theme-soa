@@ -4,10 +4,12 @@ import { addToCart } from "./CartFunctions";
 import { url_api_v0 } from "../config";
 import parse from "html-react-parser";
 import axios from "axios";
+import { toast } from "react-toastify";
 // import "./Home.scss";
 class Detail extends React.Component {
   state = {
     description: { type: "description" },
+    theme: {},
   };
   handleDescription = (type) => {
     this.setState({ description: { type } });
@@ -44,14 +46,20 @@ class Detail extends React.Component {
 
     axios
       .get(url_api_v0 + "theme/" + theme_code)
-      .then((response) => {})
-      .catch((error) => {});
+      .then((response) => {
+        this.setState({
+          theme: response.data?.data,
+        });
+      })
+      .catch((error) => {
+        toast.error(error.data);
+      });
   };
   componentDidMount() {
-    // this.getDetail();
+    this.getDetail();
   }
   render() {
-    let { description } = this.state;
+    let { description, theme } = this.state;
     return (
       <>
         <div className="container-detail">
@@ -67,25 +75,19 @@ class Detail extends React.Component {
                 <div className="text"></div>
               </div>
               <div className="right">
-                <p>
-                  Mã sản phẩm:{" "}
-                  <strong>
-                    <i>NFHFD01</i>
-                  </strong>{" "}
-                </p>
                 <h3>Theme Laravel điện máy, gia dụng nồi chiên không dầu</h3>
-                <p>Sử dụng framework laravel</p>
-                <hr />
-                <p>Danh mục: Thiết kế web, thiết kế </p>
-                <hr />
-                <div className="price">
-                  <div className="price-old">
-                    {(10000000).toLocaleString("vi-VN")} đ
-                  </div>
-                  <div className="price-new">
-                    {(9000000).toLocaleString("vi-VN")} đ
-                  </div>
+                <p>
+                  Mã sản phẩm:
+                  <strong>
+                    <i>{theme.code}</i>
+                  </strong>
+                </p>
+
+                <div className="price --price-none-space">
+                  {/* <div className="price-old">{theme.price_text}</div> */}
+                  <div className="price-new">{theme.price_text}</div>
                 </div>
+
                 <div className="button">
                   <div className="btn-add-to-cart">
                     <div className="icon">
@@ -99,11 +101,33 @@ class Detail extends React.Component {
                     </div>
                     <button
                       className="button-add-to-cart"
-                      onClick={() => this.handleAddToCart(1)}
+                      onClick={() => this.handleAddToCart(theme.id)}
                     >
                       Thêm vào giỏ hàng
                     </button>
                   </div>
+                </div>
+                {theme.gifts && (
+                  <div className="gift-container">
+                    {theme.gifts &&
+                      theme.gifts.details &&
+                      theme.gifts.details.length > 0 &&
+                      theme.gifts.details.map((item, index) => {
+                        return (
+                          <div className="gift-item">
+                            <i class="bi bi-gift"></i>
+                            <span>{item.title}</span>
+                            <i class="bi bi-check2"></i>
+                          </div>
+                        );
+                      })}
+                  </div>
+                )}
+                <div className="required-container">
+                  <h3>Điều kiện: </h3>
+                  {typeof theme.document === "string"
+                    ? parse(theme.document)
+                    : null}
                 </div>
               </div>
             </div>
@@ -127,18 +151,24 @@ class Detail extends React.Component {
                   >
                     Đánh giá
                   </div>
-                  <div
+                  {/* <div
                     className={`slider-tab-item ${
                       description.type === "used" ? "tab--active" : ""
                     }`}
                     onClick={() => this.handleDescription("used")}
                   >
                     Hướng dẫn cài đặt
-                  </div>
+                  </div> */}
                 </div>
+                <hr />
                 <div className="slider-content">
                   {description.type === "description" && (
-                    <span>Đây là phần mô tả</span>
+                    <>
+                      <span>Đây là phần mô tả</span>
+                      {typeof theme.long_description === "string"
+                        ? parse(theme.long_description)
+                        : null}
+                    </>
                   )}
                   {description.type === "rating" && (
                     <div className="container-rating">
@@ -197,9 +227,9 @@ class Detail extends React.Component {
                       </div>
                     </div>
                   )}
-                  {description.type === "used" && (
+                  {/* {description.type === "used" && (
                     <p>Đây là phần hướng dẫn cài đặt</p>
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>

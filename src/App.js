@@ -3,12 +3,7 @@ import "./App.css";
 import Home from "./Client/Home";
 import Detail from "./Client/Detail";
 import Nav from "./Client/Nav";
-import {
-  HashRouter as Router,
-  Switch,
-  Route,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter, Switch, Route, useLocation } from "react-router-dom";
 import Cart from "./Client/Cart";
 import NavAdmin from "./Admin/NavAdmin";
 import AdminHome from "./Admin/AdminHome";
@@ -18,15 +13,16 @@ import LoginAdmin from "./Admin/LoginAdmin";
 import RequireAuth from "./Admin/RequireAuth";
 import ManagerOrders from "./Admin/ManagerOrders";
 import { ToastContainer } from "react-toastify";
+import LoginAndRegister from "./Client/LoginAndRegister";
 class App extends React.Component {
   state = {
     time: new Date().toLocaleTimeString(),
   };
   render() {
     return (
-      <Router>
+      <BrowserRouter>
         <AppContent time={this.state.time} />
-      </Router>
+      </BrowserRouter>
     );
   }
 }
@@ -43,6 +39,7 @@ function AppContent() {
           <Route exact path="/" component={Home} />
           <Route path="/detail/:path" exact component={Detail} />
           <Route path="/cart" component={Cart} />
+          <Route path="/login" exact component={LoginAndRegister} />
           {isAdminRoute ? (
             <>
               <Route path="/admin/login" exact component={LoginAdmin} />

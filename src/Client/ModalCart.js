@@ -30,7 +30,7 @@ class ModalCart extends React.Component {
               {cart_details.map((item, index) =>
                 index < 5 ? (
                   <div key={index} className="modal-cart-item">
-                    <div className="img">
+                    <div className="img-container">
                       <img alt="img" src={item.theme.thumbnail_img} />
                     </div>
                     <div className="title">

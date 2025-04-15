@@ -198,3 +198,36 @@ tr:hover td {
   margin: 0 10px;
   padding: 5px 5px;
 }
+.price {
+  display: flex;
+  margin-bottom: 10px;
+  /* min-width: 200px; */
+  margin: 10px 30%;
+}
+.price .price-old {
+  color: gray;
+  text-decoration: line-through;
+}
+.price .price-new {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+.price-old + .price-new {
+  margin-left: 10px;
+}
+.--price-none-space {
+  justify-content: none;
+}
+
+.Toastify__toast {
+  border-radius: 8px; /* bo góc nhẹ cho toast */
+  padding: 12px 16px;
+  font-size: 2rem;
+}
+td .price-new {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+a {
+  cursor: pointer;
+}

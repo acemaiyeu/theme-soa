@@ -166,6 +166,7 @@ class Cart extends React.Component {
           session_id: localStorage.getItem("sessionId"),
         })
         .then((response) => {
+          toast.success("Áp dụng mã thành công!");
           axios
             .get(
               url_api_v0 +
@@ -181,8 +182,18 @@ class Cart extends React.Component {
         })
         .catch((error) => {
           console.log(error);
+          toast.error("Áp dụng mã không thành công!");
         });
     }
+    this.setState({
+      cart: {
+        ...this.state.cart,
+        data: {
+          ...this.state.cart.data,
+          discount_code: "",
+        },
+      },
+    });
   };
   checkout = () => {
     if (!this.state.cart?.data?.fullname) {
@@ -215,6 +226,10 @@ class Cart extends React.Component {
         console.log(error);
       });
   };
+  changePayment = () => {
+    // this.setState({ isShowCondition: !this.state.isShowCondition });
+  };
+  changeTerm = () => {};
   render() {
     let { listDiscounts, isShowCondition, cart } = this.state;
     return (
@@ -287,7 +302,7 @@ class Cart extends React.Component {
                           </td>
                           <td className="value-table">{item.theme.title}</td>
                           <td className="value-table">{item.quantity}</td>
-                          <td className="value-table price">
+                          <td className="value-table">
                             <p className="price-new">{item.total_text}</p>
                           </td>
                         </tr>
@@ -305,7 +320,9 @@ class Cart extends React.Component {
                     <div>
                       <input
                         className="input"
-                        value={this.state?.cart?.data?.discount_code ?? ""}
+                        defaultValue={
+                          this.state?.cart?.data?.discount_code ?? ""
+                        }
                       />
                       <button
                         className="btn"
@@ -325,7 +342,7 @@ class Cart extends React.Component {
                                 <div className="discount-title">
                                   {item.name}
                                   <div className="discount-time">
-                                    {item.end_date}
+                                    HSD: {item.end_date}
                                   </div>
                                 </div>
 
@@ -397,7 +414,12 @@ class Cart extends React.Component {
                 <div className="method-payment">
                   <h3>Phương thức thanh toán</h3>
                   <div className="payment-contents">
-                    <input type="radio" id="check" value={true} />
+                    <input
+                      type="radio"
+                      id="check"
+                      checked="checked"
+                      onChange={() => this.changePayment()}
+                    />
 
                     <img
                       src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-ZaloPay-Square.png"
@@ -407,8 +429,13 @@ class Cart extends React.Component {
                   </div>
                 </div>
                 <div className="term">
-                  <input type="checkbox" id="check" checked="checked" /> &nbsp;
-                  Đồng ý với &nbsp;
+                  <input
+                    type="checkbox"
+                    id="check"
+                    checked="checked"
+                    onChange={() => this.changeTerm()}
+                  />{" "}
+                  &nbsp; Đồng ý với &nbsp;
                   <p> Điều khoản</p> &nbsp; của ThemeSoa
                 </div>
 

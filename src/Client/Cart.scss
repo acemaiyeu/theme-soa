@@ -184,17 +184,22 @@
             background-color: #f0f0f0;
             padding: 10px;
             .checkout-item {
+              width: 100%;
               display: flex;
               justify-content: space-between;
               .checkout-title {
                 text-wrap: nowrap;
-                overflow: hidden;
+                // overflow: hidden;
                 // white-space: normal;
                 text-overflow: ellipsis;
               }
               .checkout-value {
+                margin: 0;
+                display: flex;
+                justify-content: flex-end;
                 .price-new {
                   min-width: 142px;
+                  text-align: right;
                 }
               }
             }

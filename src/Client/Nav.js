@@ -1,7 +1,7 @@
 import React from "react";
 import "./Nav.scss";
 import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
-import { url_api_v0 } from "../config";
+import { url_api_v0, url_api_v1 } from "../config";
 import axios from "axios";
 import ModalCart from "./ModalCart";
 import BoxNumber from "./BoxNumber";
@@ -18,10 +18,16 @@ import huongdan_icon from "../../src/assets/images/huongdan_icon.png";
 import found_icon from "../../src/assets/images/found_icon.webp";
 import question_icon from "../../src/assets/images/qyuestion_icon.png";
 import q_a_icon from "../../src/assets/images/qa.png";
+import icon_database from "../../src/assets/images/database.png";
+import icon_rest_api from "../../src/assets/images/rest_api2.png";
+import icon_post from "../../src/assets/images/post.jpg";
+import icon_help from "../../src/assets/images/help.png";
 class Nav extends React.Component {
   state = {
     isSearch: false,
     cart: { data: null },
+    profile: { data: null },
+    category_list: false,
   };
   handleSearch = (event) => {
     console.log(event.target.className);
@@ -65,6 +71,18 @@ class Nav extends React.Component {
         console.error("Có lỗi khi gọi API:", error);
       });
   };
+  getProfile = () => {
+    axios
+      .get(url_api_v1 + "profile", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+      .then((response) => {
+        this.setState({ profile: response.data });
+      })
+      .catch((error) => {
+        console.error("Có lý khi gọi API get profile:", error);
+      });
+  };
   getCart = () => {
     axios
       .get(url_api_v0 + "cart?session_id=" + localStorage.getItem("sessionId"))
@@ -87,19 +105,159 @@ class Nav extends React.Component {
         console.error("Có lỗi khi gọi API get Cart:", error);
       });
   };
+  handleChangeCategoryList = () => {
+    this.setState({ category_list: !this.state.category_list });
+  };
   componentDidMount = () => {
     this.getSessionId();
     // if (this.state.cart !== null) {
     this.getCart();
+    this.getProfile();
     // }
   };
   render() {
-    let { isSearch } = this.state;
+    let { isSearch, category_list } = this.state;
+
     return (
       <>
         <div className="container">
           <div className="container-item">
             <nav className="navbar">
+              <div
+                className="category_nav-container"
+                onClick={() => this.handleChangeCategoryList()}
+              >
+                <i class="bi bi-justify category-icon">
+                  {category_list && (
+                    <div
+                      className="category_nav-modal"
+                      onClick={() => this.handleChangeCategoryList()}
+                    >
+                      <div className="category_nav-box">
+                        <ul className="category_nav-list">
+                          <h3>
+                            {" "}
+                            <img alt src={icon_laravel} /> LARAVEL
+                          </h3>
+                          <li className="category_nav-item">
+                            <img src={icon_fashion} alt="icon_fashion" /> Theme
+                            Laravel Thời trang
+                          </li>
+
+                          <li className="category_nav-item">
+                            <img src={icon_noi_that} alt="icon_noi_that" />{" "}
+                            Theme Laravel Nội Thất
+                          </li>
+                          <li className="category_nav-item">
+                            <img src={icon_food} alt="icon_food" /> Theme
+                            Laravel Thực phẩm
+                          </li>
+                          <li className="category_nav-item">
+                            <img src={icon_smart_phone} alt="icon_technology" />{" "}
+                            Theme Laravel Công nghệ
+                          </li>
+                        </ul>
+                        <ul className="category_nav-list">
+                          <h3>
+                            {" "}
+                            <img alt="icon-springboot" src={icon_spring} />{" "}
+                            SPRINGBOOT
+                          </h3>
+                          <li className="category_nav-item">
+                            <img src={icon_fashion} alt="icon_fashion" /> Theme
+                            Laravel Thời trang
+                          </li>
+
+                          <li className="category_nav-item">
+                            <img src={icon_noi_that} alt="icon_noi_that" />{" "}
+                            Theme Laravel Nội Thất
+                          </li>
+                          <li className="category_nav-item">
+                            <img src={icon_food} alt="icon_food" /> Theme
+                            Laravel Thực phẩm
+                          </li>
+                          <li className="category_nav-item">
+                            <img src={icon_smart_phone} alt="icon_technology" />{" "}
+                            Theme Laravel Công nghệ
+                          </li>
+                        </ul>
+                        <ul className="category_nav-list">
+                          <h3>
+                            {" "}
+                            <img alt="icon-springboot" src={icon_swing} /> JAVA
+                            SWING
+                          </h3>
+                          <li className="category_nav-item">
+                            <img src={icon_fashion} alt="icon_fashion" /> Theme
+                            Laravel Thời trang
+                          </li>
+
+                          <li className="category_nav-item">
+                            <img src={icon_noi_that} alt="icon_noi_that" />{" "}
+                            Theme Laravel Nội Thất
+                          </li>
+                          <li className="category_nav-item">
+                            <img src={icon_food} alt="icon_food" /> Theme
+                            Laravel Thực phẩm
+                          </li>
+                          <li className="category_nav-item">
+                            <img src={icon_smart_phone} alt="icon_technology" />{" "}
+                            Theme Laravel Công nghệ
+                          </li>
+                        </ul>
+                        <ul className="category_nav-list">
+                          <h3>
+                            {" "}
+                            <img alt="icon-laravel" src={icon_database} />{" "}
+                            DATABASE
+                          </h3>
+                          <li className="category_nav-item">
+                            <img src={icon_mysql} alt="icon_fashion" /> MYSQL
+                          </li>
+                          <li className="category_nav-item">
+                            <img src={icon_sqlserver} alt="icon_fashion" /> SQL
+                            SERVER
+                          </li>
+                        </ul>
+
+                        <ul className="category_nav-list">
+                          <h3>
+                            {" "}
+                            <img alt="icon-rest-api" src={icon_rest_api} />{" "}
+                            PROJECT API
+                          </h3>
+                          <li className="category_nav-item">
+                            <img src={icon_laravel} alt="icon_laravel" />{" "}
+                            Project Laravel Api (Bán hàng)
+                          </li>
+                        </ul>
+                        <ul className="category_nav-list">
+                          <h3>
+                            {" "}
+                            <img alt="icon-help" src={icon_help} /> Hỗ trợ
+                          </h3>
+                          <li className="category_nav-item">
+                            <img src={huongdan_icon} alt="huongdan_icon" />
+                            Đặt hàng và thanh toán
+                          </li>
+                          <li className="category_nav-item">
+                            <img src={question_icon} alt="question_icon" /> Câu
+                            hỏi thường gặp
+                          </li>
+                          <li className="category_nav-item">
+                            <img src={found_icon} alt="found_icon" /> Tra cứu
+                            vận đơn
+                          </li>
+                          <li className="category_nav-item">
+                            <img src={question_icon} alt="found_icon" /> Đặt câu
+                            hỏi
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                </i>
+              </div>
               <div className="logo" onClick={() => this.backtoHome()}>
                 {/* <img src={logo} alt="" /> */}
                 <i className="bi bi-house-door"></i>
@@ -539,14 +697,30 @@ class Nav extends React.Component {
                     ></i>
                   </li>
                   <li>
-                    <i class="bi bi-bell"></i>
+                    <i className="bi bi-bell"></i>
+                    <div className="container-modal-customer --notification-custom">
+                      <ul className="modal-list-customer">
+                        <li className="modal-item-customer">
+                          <div className="modal-customer-icon">
+                            <i class="bi bi-bell"></i>
+                          </div>
+                          <a className="modal-customer-title">
+                            Giảm tưng bừng ngày 30/4/2025 ngày giải phóng hoàn
+                            toàn miền Nam
+                          </a>
+                        </li>
+                        <li className="modal-item-customer unread">
+                          <div className="modal-customer-icon">
+                            <i class="bi bi-patch-question"></i>
+                          </div>
+                          <a className="modal-customer-title">
+                            Trả lời câu hỏi ngày 29/4/2025
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
                   </li>
-                  <li>
-                    <i class="bi bi-person"></i>
-                  </li>
-                  <li>
-                    <div>Đăng nhập</div>
-                  </li>
+
                   {/* <li className="login">
                     <div>Đăng ký</div>
                     <div>Đăng nhập</div>
@@ -560,6 +734,31 @@ class Nav extends React.Component {
                     <BoxNumber
                       number={this.state.cart?.data?.details?.length ?? 0}
                     />
+                  </li>
+
+                  <li>
+                    <i className="bi bi-person"></i>
+                    <div className="container-modal-customer --person-custom">
+                      <ul className="modal-list-customer">
+                        {this.state.profile?.data ? (
+                          <li className="modal-item-customer">
+                            <a href="#">Thông tin tài khoản</a>
+                          </li>
+                        ) : (
+                          <>
+                            <li className="modal-item-customer">
+                              <a href="#">Thông tin tài khoản</a>
+                            </li>
+                            <li className="modal-item-customer">
+                              <a href="#">Quản lý đơn hàng</a>
+                            </li>
+                            <li className="modal-item-customer">
+                              <a href="#">Đăng xuất</a>
+                            </li>
+                          </>
+                        )}
+                      </ul>
+                    </div>
                   </li>
                 </ul>
               </div>
