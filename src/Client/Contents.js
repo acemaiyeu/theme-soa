@@ -35,6 +35,23 @@ class Contents extends React.Component {
     return (
       <>
         <div className="contents">
+          <div className="header-filter">
+            <div className="header-filter-box">
+              <div className="header-filter-item">
+                <p>Tìm thấy 121 kết quả</p>
+              </div>
+              <div className="header-filter-item">
+                <div className="sort-box">
+                  <div className="sort-box-label">Sắp xếp theo: </div>
+                  <select>
+                    <option>Nổi bật</option>
+                    <option>Giá giảm dần</option>
+                    <option>Giá tăng dần</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="content">
             {listThemes &&
               listThemes.length > 0 &&

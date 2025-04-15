@@ -25,6 +25,8 @@
       padding: 10px;
       position: relative;
 
+      // color: red;
+
       .logo {
         width: auto;
         height: 30px;
@@ -37,8 +39,9 @@
         }
       }
       .navbar-list {
+        border: 1px solid red;
         position: absolute;
-        width: 80%;
+        width: 100%;
         top: 63%;
         // display: flex;
         background-color: var(--white-color);
@@ -563,31 +566,9 @@
   display: none;
 }
 @media (max-width: 768px) {
-  .container .container-item .navbar .logo {
-    width: 40px;
-  }
-  .container .container-item .navbar .nav-category {
-    flex: 1;
-    justify-content: flex-end;
-  }
   .container .container-item .navbar .nav-category .nav-left {
     width: 0px;
     display: none;
-  }
-  .container .container-item .navbar .nav-category .nav-right {
-    align-items: center;
-  }
-  .container .container-item .navbar {
-    justify-content: space-between;
-  }
-
-  .--notification-custom {
-    top: 80%;
-    left: 29.9%;
-    max-width: 300px;
-    &::before {
-      left: 28%;
-    }
   }
   .category_nav-container {
     position: relative;
@@ -654,6 +635,30 @@
       }
     }
   }
+  .container .container-item .navbar .logo {
+    width: 40px;
+  }
+  .container .container-item .navbar .nav-category {
+    flex: 1;
+    justify-content: flex-end;
+  }
+
+  .container .container-item .navbar .nav-category .nav-right {
+    align-items: center;
+  }
+  .container .container-item .navbar {
+    justify-content: space-between;
+  }
+
+  .--notification-custom {
+    top: 100%;
+    right: -14px;
+    max-width: 300px;
+    // position: absolute;
+    &::before {
+      right: 0;
+    }
+  }
 
   .container
     .container-item
@@ -664,13 +669,57 @@
     .container-modal-customer {
     max-width: 300px;
     &::before {
-      left: 71%;
+      left: 82%;
     }
   }
+}
+
+@media screen and (max-width: 1024px) {
+}
+.container .container-item .navbar .nav-category ul li .--person-custom {
+  right: -50px;
+  &::before {
+    left: 80%;
+  }
+  .container
+    .container-item
+    .navbar
+    .nav-category
+    ul
+    li
+    .container-modal-customer::before {
+    left: 82%;
+  }
+}
+@media screen and (min-width: 769px) and (max-width: 1535px) {
+  .container .container-item .navbar {
+    justify-content: space-between;
+    padding: 0 10px;
+  }
+  .container .container-item .navbar .nav-category ul li {
+    // font-size: 1rem;
+  }
+  .container .container-item .navbar .nav-category {
+    flex: 1;
+  }
+  .container .container-item .navbar .nav-category ul li .theme-new-box {
+    position: absolute;
+    width: 100%;
+    left: 0;
+  }
   .container .container-item .navbar .nav-category ul li .--person-custom {
-    right: -50px;
+    right: -70px;
     &::before {
-      left: 80%;
+      left: 70%;
     }
+  }
+  .container
+    .container-item
+    .navbar
+    .nav-category
+    ul
+    li
+    .container-modal-customer {
+    top: 38px;
   }
 }

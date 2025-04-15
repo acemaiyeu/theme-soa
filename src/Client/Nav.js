@@ -742,7 +742,7 @@ class Nav extends React.Component {
                       <ul className="modal-list-customer">
                         {this.state.profile?.data ? (
                           <li className="modal-item-customer">
-                            <a href="#">Thông tin tài khoản</a>
+                            <a href="/login">Đăng nhập</a>
                           </li>
                         ) : (
                           <>
