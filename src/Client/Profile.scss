@@ -1,0 +1,120 @@
+.profile-container {
+  margin-top: 100px;
+  color: black;
+  .profile-box {
+    width: 30%;
+    min-height: 400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    font-size: 2rem;
+
+    position: relative;
+    i {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 3rem;
+      cursor: pointer;
+      &:hover {
+        color: var(--primary-color);
+      }
+    }
+    h1 {
+      margin-top: 20px;
+      font-size: 5rem;
+    }
+    .form-control-profile {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      &:first-child {
+        margin-top: 20px;
+      }
+      label {
+        min-width: 134px;
+        text-align: left;
+      }
+      input + input {
+        margin-left: 10px;
+      }
+      .radio-box {
+        // flex: 1;
+        input[type="radio"] {
+          appearance: none; /* Ẩn giao diện mặc định */
+          width: 20px;
+          height: 20px;
+          border: 2px solid var(--primary-color);
+          border-radius: 50%; /* Làm tròn thành hình tròn */
+          outline: none;
+          cursor: pointer;
+          position: relative;
+          margin-top: 8px;
+        }
+        input[type="radio"]:checked::before {
+          content: "";
+          position: absolute;
+          top: 2.5px;
+          left: 3px;
+          width: 10px;
+          height: 10px;
+          background-color: var(--primary-color);
+          border-radius: 50%;
+        }
+      }
+      input {
+        outline: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 10px;
+        width: 100%;
+        // font-size: 1.2rem;
+        &:focus {
+          border-color: var(--primary-color);
+        }
+      }
+      &:last-child {
+        display: flex;
+        flex-direction: column;
+        .btn-default {
+          width: 30%;
+          padding: 10px 20px;
+          text-align: center;
+          vertical-align: middle;
+          justify-content: center;
+          margin: 10px auto;
+        }
+        a {
+          font-size: 1.4rem;
+          color: var(--primary-color);
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+    .form-control-profile + .form-control-profile {
+      margin-top: 10px;
+    }
+  }
+}
+@media screen and (max-width: 768px) {
+  .profile-container {
+    .profile-box {
+      width: 100% !important;
+      font-size: 1.6rem;
+    }
+  }
+  .profile-container .profile-box .form-control-profile label {
+    min-width: 110px;
+    text-align: left;
+  }
+  .profile-container .profile-box h1 {
+    font-size: 3rem;
+    margin-left: 100px;
+  }
+}

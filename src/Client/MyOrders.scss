@@ -1,0 +1,118 @@
+.list-orders {
+  width: 60%;
+  margin: 70px auto 10px auto;
+  //   border: 1px solid#000;
+  color: black;
+  .list-orders-container {
+    border: 1px solid rgba(238, 238, 238, 0.774);
+    // position: relative;
+    h3 {
+      //   position: absolute;
+      font-size: 2rem;
+      text-align: right;
+      margin-right: 20px;
+    }
+  }
+  .list-orders-container + .list-orders-container {
+    margin-top: 10px;
+  }
+  .list-order-item {
+    width: 100%;
+    display: flex;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+    flex-direction: column;
+    padding: 10px;
+    cursor: pointer;
+    &:hover {
+      background-color: #f1f1f1b4;
+    }
+    .list-order-header {
+      display: flex;
+      justify-content: space-between;
+      .list-order-header-img {
+        max-width: 100px;
+        margin-right: 20px;
+        display: flex;
+        img {
+          margin: auto;
+          width: 100%;
+        }
+      }
+      .list-order-header-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        .list-order-header-content-title {
+          font-size: 1.9rem;
+        }
+        .list-order-header-content-type {
+          font-size: 1.7rem;
+          color: gray;
+        }
+        .list-order-header-content-number {
+          font-size: 1.5rem;
+        }
+      }
+      .list-order-header-price {
+        max-width: 250px;
+        display: flex;
+        color: var(--primary-color);
+        font-weight: bold;
+        justify-items: center;
+        align-items: center;
+
+        flex-direction: column;
+        span {
+          font-size: 2.5rem;
+        }
+        .btn-box {
+          width: 100%;
+          display: flex;
+          justify-content: flex-end;
+          .btn-default {
+            padding: 10px 20px;
+            &:first-child {
+              color: white;
+            }
+            &:last-child {
+              &:hover {
+                color: var(--primary-color);
+              }
+            }
+          }
+        }
+      }
+    }
+    .list-order-bottom {
+      display: flex;
+    }
+  }
+  .list-order-item + .list-order-item {
+    margin-top: 10px;
+  }
+}
+@media screen and (max-width: 764px) {
+  .list-orders {
+    width: 100%;
+  }
+  .list-orders
+    .list-order-item
+    .list-order-header
+    .list-order-header-price
+    span {
+    font-size: 1.5rem;
+  }
+  .list-orders
+    .list-order-item
+    .list-order-header
+    .list-order-header-price
+    .btn-box
+    .btn-default {
+    font-size: 1.2rem;
+    padding: 5px 10px;
+  }
+  .list-orders .list-order-item .list-order-header .list-order-header-price {
+    justify-content: space-around;
+  }
+}

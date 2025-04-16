@@ -1,7 +1,7 @@
 import React from "react";
 import "./Nav.scss";
 import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
-import { url_api_v0, url_api_v1 } from "../config";
+import { url_api_v0, url_api_v1, url_api_logout } from "../config";
 import axios from "axios";
 import ModalCart from "./ModalCart";
 import BoxNumber from "./BoxNumber";
@@ -105,6 +105,19 @@ class Nav extends React.Component {
         console.error("Có lỗi khi gọi API get Cart:", error);
       });
   };
+  logout = () => {
+    axios
+      .post(url_api_logout, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+      .then((response) => {
+        localStorage.removeItem("token");
+        this.getProfile();
+      })
+      .catch((error) => {
+        console.error("Có lý khi gọi API logout:", error);
+      });
+  };
   handleChangeCategoryList = () => {
     this.setState({ category_list: !this.state.category_list });
   };
@@ -127,7 +140,7 @@ class Nav extends React.Component {
                 className="category_nav-container"
                 onClick={() => this.handleChangeCategoryList()}
               >
-                <i class="bi bi-justify category-icon">
+                <i className="bi bi-justify category-icon">
                   {category_list && (
                     <div
                       className="category_nav-modal"
@@ -702,7 +715,7 @@ class Nav extends React.Component {
                       <ul className="modal-list-customer">
                         <li className="modal-item-customer">
                           <div className="modal-customer-icon">
-                            <i class="bi bi-bell"></i>
+                            <i className="bi bi-bell"></i>
                           </div>
                           <a className="modal-customer-title">
                             Giảm tưng bừng ngày 30/4/2025 ngày giải phóng hoàn
@@ -711,7 +724,7 @@ class Nav extends React.Component {
                         </li>
                         <li className="modal-item-customer unread">
                           <div className="modal-customer-icon">
-                            <i class="bi bi-patch-question"></i>
+                            <i className="bi bi-patch-question"></i>
                           </div>
                           <a className="modal-customer-title">
                             Trả lời câu hỏi ngày 29/4/2025
@@ -740,17 +753,17 @@ class Nav extends React.Component {
                     <i className="bi bi-person"></i>
                     <div className="container-modal-customer --person-custom">
                       <ul className="modal-list-customer">
-                        {this.state.profile?.data ? (
+                        {!this.state.profile?.data ? (
                           <li className="modal-item-customer">
                             <a href="/login">Đăng nhập</a>
                           </li>
                         ) : (
                           <>
                             <li className="modal-item-customer">
-                              <a href="#">Thông tin tài khoản</a>
+                              <a href="/profile">Thông tin tài khoản</a>
                             </li>
                             <li className="modal-item-customer">
-                              <a href="#">Quản lý đơn hàng</a>
+                              <a href="/my-orders">Quản lý đơn hàng</a>
                             </li>
                             <li className="modal-item-customer">
                               <a href="#">Đăng xuất</a>

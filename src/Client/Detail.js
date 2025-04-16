@@ -114,10 +114,10 @@ class Detail extends React.Component {
                       theme.gifts.details.length > 0 &&
                       theme.gifts.details.map((item, index) => {
                         return (
-                          <div className="gift-item">
-                            <i class="bi bi-gift"></i>
+                          <div className="gift-item" key={item.id}>
+                            <i className="bi bi-gift"></i>
                             <span>{item.title}</span>
-                            <i class="bi bi-check2"></i>
+                            <i className="bi bi-check2"></i>
                           </div>
                         );
                       })}
@@ -223,7 +223,7 @@ class Detail extends React.Component {
                             <input className="inp-email input"></input>
                           </div>
                         </div>
-                        <button className="btn">Gửi đi</button>
+                        <button className="btn ">Gửi đi</button>
                       </div>
                     </div>
                   )}

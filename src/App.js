@@ -14,6 +14,9 @@ import RequireAuth from "./Admin/RequireAuth";
 import ManagerOrders from "./Admin/ManagerOrders";
 import { ToastContainer } from "react-toastify";
 import LoginAndRegister from "./Client/LoginAndRegister";
+import Profile from "./Client/Profile";
+import MyOrders from "./Client/MyOrders";
+import DetailOrder from "./Client/DetailOrder";
 class App extends React.Component {
   state = {
     time: new Date().toLocaleTimeString(),
@@ -39,6 +42,9 @@ function AppContent() {
           <Route exact path="/" component={Home} />
           <Route path="/detail/:path" exact component={Detail} />
           <Route path="/cart" component={Cart} />
+          <Route path="/profile" component={Profile} />
+          <Route path="/my-orders" exact component={MyOrders} />
+          <Route path="/my-order/:code" component={DetailOrder} />
           <Route path="/login" exact component={LoginAndRegister} />
           {isAdminRoute ? (
             <>

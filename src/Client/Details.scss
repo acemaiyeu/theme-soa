@@ -237,3 +237,93 @@ h6 {
 button:hover {
   cursor: pointer;
 }
+
+@media screen and (max-width: 768px) {
+  .container-detail .content .content__item {
+    flex-direction: column;
+  }
+  .container-detail {
+    width: 100%;
+  }
+  img {
+    width: 100%;
+  }
+  div.button .btn-add-to-cart .icon {
+    display: none;
+  }
+  div.button {
+    width: 100%;
+    z-index: 1;
+    position: fixed;
+    bottom: 10px;
+    left: 0;
+    border: 1px solid #e8e8e8;
+    background-color: white;
+  }
+  .container-detail .info .slider {
+    margin-bottom: 50px;
+  }
+  .container-detail .content .content__item .right .gift-container {
+    width: 100%;
+    padding: 0 2px;
+    font-size: 1.3rem;
+  }
+  .container-detail .content .content__item .right .required-container {
+    width: 100%;
+    font-size: 1.3rem;
+  }
+  .container-detail
+    .info
+    .slider
+    .slider-content
+    .container-rating
+    .rating
+    .stars {
+    width: 90%;
+    font-size: 1.4rem;
+  }
+  .container-detail
+    .info
+    .slider
+    .slider-content
+    .container-rating
+    .rating
+    .comment {
+    width: 90%;
+    font-size: 1.4rem;
+  }
+  .container-detail
+    .info
+    .slider
+    .slider-content
+    .container-rating
+    .rating
+    .info-user {
+    width: 90%;
+    flex-direction: column;
+  }
+  .container-detail
+    .info
+    .slider
+    .slider-content
+    .container-rating
+    .rating
+    .info-user
+    .username,
+  .container-detail
+    .info
+    .slider
+    .slider-content
+    .container-rating
+    .rating
+    .info-user
+    .email {
+    width: 90%;
+  }
+  .btn {
+    margin-bottom: 30px;
+  }
+  .container-detail .info .slider .slider-content {
+    font-size: 1.3rem;
+  }
+}

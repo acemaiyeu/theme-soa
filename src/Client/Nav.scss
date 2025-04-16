@@ -286,6 +286,7 @@
               // max-width: 100px;
               min-width: 200px;
               top: 105%;
+              // left: 74.36%;
               &::before {
                 top: -33px;
                 left: 20%;
@@ -565,7 +566,7 @@
 .category_nav-container {
   display: none;
 }
-@media (max-width: 768px) {
+@media only screen and (max-width: 768px) {
   .container .container-item .navbar .nav-category .nav-left {
     width: 0px;
     display: none;
@@ -583,6 +584,7 @@
         background-color: #f7f6f652;
         position: absolute;
         top: 37px;
+        left: -18px;
         .category_nav-box {
           position: absolute;
           width: 250px;
@@ -648,15 +650,16 @@
   }
   .container .container-item .navbar {
     justify-content: space-between;
+    padding: 10px 30px;
   }
 
   .--notification-custom {
     top: 100%;
-    right: -14px;
+    right: -60px;
     max-width: 300px;
     // position: absolute;
     &::before {
-      right: 0;
+      right: 40px;
     }
   }
 
@@ -669,28 +672,32 @@
     .container-modal-customer {
     max-width: 300px;
     &::before {
-      left: 82%;
+      left: 66%;
     }
   }
 }
 
-@media screen and (max-width: 1024px) {
-}
-.container .container-item .navbar .nav-category ul li .--person-custom {
-  right: -50px;
-  &::before {
-    left: 80%;
+@media only screen and (max-width: 1024px) {
+  .container .container-item .navbar .nav-category ul li .--person-custom {
+    right: -50px;
+    &::before {
+      left: 70%;
+    }
+    .container
+      .container-item
+      .navbar
+      .nav-category
+      ul
+      li
+      .container-modal-customer::before {
+      left: 82%;
+    }
   }
-  .container
-    .container-item
-    .navbar
-    .nav-category
-    ul
-    li
-    .container-modal-customer::before {
-    left: 82%;
+  .container .container-item .navbar .nav-category ul li {
+    font-size: 1.3rem;
   }
 }
+
 @media screen and (min-width: 769px) and (max-width: 1535px) {
   .container .container-item .navbar {
     justify-content: space-between;

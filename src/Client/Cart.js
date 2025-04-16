@@ -269,7 +269,10 @@ class Cart extends React.Component {
                 onChange={(e) => this.handleChangeInputPhone(e)}
               />
             </form>
-            <button className="btn" onClick={() => this.updateCartInfo()}>
+            <button
+              className="btn-default btn-bg-orange-op-5"
+              onClick={() => this.updateCartInfo()}
+            >
               Cập nhật
             </button>
           </div>
@@ -283,7 +286,7 @@ class Cart extends React.Component {
                   ></img>
                 </div> */}
                 <div className="cart-item-content">
-                  <table className="table">
+                  <table className="table table-cart">
                     <thead>
                       <tr>
                         <th className="col-1">#</th>
@@ -309,6 +312,50 @@ class Cart extends React.Component {
                       ))}
                     </tbody>
                   </table>
+                  <div className="list_details">
+                    {cart?.data?.details?.map((item, index) => (
+                      <div className="list_details_item">
+                        <div className="img">
+                          <img
+                            alt="img"
+                            src="https://media.istockphoto.com/id/1177199065/photo/african-lion-and-night-in-africa-banner-savannah-landscape-theme-king-of-animals-proud.jpg?s=612x612&w=0&k=20&c=I6zG27ksq2_4rBjLCN8kQMuiBysPA_rnfurxbGsP8BE="
+                          />
+                        </div>
+                        <div className="list_details_item-info">
+                          <div className="list_details_item-header">
+                            {item.theme.title}
+                          </div>
+                          <div className="list_details_item-bottom">
+                            <div className="list_details_item-bottom-price">
+                              <div className="price">
+                                <p className="price-new">{item.total_text}</p>
+                              </div>
+                            </div>
+                            <div className="list_details_item-bottom-number">
+                              <div className="listButtonContainer">
+                                <div className="listButton">
+                                  <button className="btn-default btn-bg-orange-op-5">
+                                    <i class="bi bi-dash"></i>
+                                  </button>
+                                  <span>{item.quantity}</span>
+                                  <button
+                                    className="btn-default btn-bg-orange-op-5"
+                                    onClick={() =>
+                                      this.handleChangePage(
+                                        this.state.currentPage + 1
+                                      )
+                                    }
+                                  >
+                                    <i class="bi bi-plus"></i>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -325,7 +372,7 @@ class Cart extends React.Component {
                         }
                       />
                       <button
-                        className="btn"
+                        className="btn-default btn-bg-orange-op-5"
                         onClick={() => this.appLyDiscount()}
                       >
                         Áp dụng
@@ -348,7 +395,7 @@ class Cart extends React.Component {
 
                                 <div className="button-list">
                                   <button
-                                    className="btn"
+                                    className="btn-default btn-bg-orange-op-5"
                                     onClick={() =>
                                       this.handleApplyDiscount(item)
                                     }
@@ -356,7 +403,7 @@ class Cart extends React.Component {
                                     Áp dụng
                                   </button>
                                   <button
-                                    className="btn btn-info btn-condition"
+                                    className="btn-default btn-bg-blue-op-5"
                                     onClick={() =>
                                       this.handleChageCondition(index)
                                     }
