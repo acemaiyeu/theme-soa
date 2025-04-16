@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { url_api_v0 } from "../config";
 import axios from "axios";
 
@@ -15,8 +16,8 @@ export const addToCart = (theme_id) => {
     )
 
     .then((response) => {
-      this.setState({ cart: response.data });
       localStorage.setItem("cart", response.data);
+      toast.success("Thêm vào giỏ hàng thành công");
     })
     .catch((error) => {
       console.error("Có lỗi khi gọi API addToCart:", error);

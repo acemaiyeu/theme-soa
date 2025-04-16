@@ -132,6 +132,7 @@ class Cart extends React.Component {
       )
       .then((response) => {
         localStorage.setItem("cart", JSON.stringify(response.data));
+        toast.success("Cập nhật thông tin giỏ hàng thành công");
       })
       .catch((error) => {
         console.log(error);
@@ -158,11 +159,59 @@ class Cart extends React.Component {
       },
     });
   };
+  handleOnChangeDiscountCart = (e) => {
+    this.setState({
+      cart: {
+        ...this.state.cart,
+        data: {
+          ...this.state.cart.data,
+          discount_code: e.target.value,
+        },
+      },
+    });
+  };
   appLyDiscount = () => {
     if (this.state.cart?.data?.discount_code) {
       axios
         .post(url_api_v0 + "add-discount", {
           discount_code: this.state.cart?.data?.discount_code,
+          session_id: localStorage.getItem("sessionId"),
+        })
+        .then((response) => {
+          toast.success("Áp dụng mã thành công!");
+          axios
+            .get(
+              url_api_v0 +
+                "cart?session_id=" +
+                localStorage.getItem("sessionId")
+            )
+            .then((response) => {
+              localStorage.setItem("cart", JSON.stringify(response.data));
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("Áp dụng mã không thành công!");
+        });
+    }
+    this.setState({
+      cart: {
+        ...this.state.cart,
+        data: {
+          ...this.state.cart.data,
+          discount_code: "",
+        },
+      },
+    });
+  };
+  chooseAndAppLyDiscount = (code) => {
+    if (code) {
+      axios
+        .post(url_api_v0 + "add-discount", {
+          discount_code: code,
           session_id: localStorage.getItem("sessionId"),
         })
         .then((response) => {
@@ -273,7 +322,7 @@ class Cart extends React.Component {
               className="btn-default btn-bg-orange-op-5"
               onClick={() => this.updateCartInfo()}
             >
-              Cập nhật
+              <i class="bi bi-arrow-repeat"></i>
             </button>
           </div>
           <div className="cart-item-list">
@@ -370,6 +419,7 @@ class Cart extends React.Component {
                         defaultValue={
                           this.state?.cart?.data?.discount_code ?? ""
                         }
+                        onChange={(e) => this.handleOnChangeDiscountCart(e)}
                       />
                       <button
                         className="btn-default btn-bg-orange-op-5"
@@ -397,10 +447,10 @@ class Cart extends React.Component {
                                   <button
                                     className="btn-default btn-bg-orange-op-5"
                                     onClick={() =>
-                                      this.handleApplyDiscount(item)
+                                      this.chooseAndAppLyDiscount(item.code)
                                     }
                                   >
-                                    Áp dụng
+                                    Sử dụng
                                   </button>
                                   <button
                                     className="btn-default btn-bg-blue-op-5"

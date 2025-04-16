@@ -23,6 +23,7 @@
     margin: 20px auto;
     .user-info {
       width: 80%;
+
       display: flex;
       margin: 0 auto;
       align-items: center;
@@ -100,10 +101,17 @@
 
                 input {
                   flex: 1;
-                  height: 2.2rem;
+                  font-size: 1.17rem;
+                  height: 1.17rem;
                   border: 1px solid #ccc;
                   border-radius: 5px;
                   outline: none;
+                  padding: auto 10px;
+                  box-sizing: border-box;
+                }
+                .discount-title {
+                  width: 100%;
+                  font-size: 1.5rem;
                 }
                 button {
                   margin-left: 10px;
@@ -122,6 +130,7 @@
                   justify-content: space-around;
                   border: 0 1px dotted #ccc;
                   padding: 5px 5px;
+                  font-size: 1.5rem;
                   .discount-title {
                     height: 100%;
                     flex: 1;
@@ -294,6 +303,7 @@
     align-items: center;
     justify-content: center;
     justify-items: center;
+    font-size: 1.17rem;
     form {
       width: 100%;
       label {
@@ -324,14 +334,18 @@
     form {
       display: flex;
       flex-direction: column;
+      font-size: 1.17rem;
       .input {
         width: 100%;
         margin-left: 0;
+        line-height: 0.5rem;
       }
     }
   }
   .cart_container .cart-contents .user-info button {
     margin: 10px auto;
+    font-size: 1.17rem;
+    padding: 10px 20px;
   }
   .table-cart {
     display: none;
@@ -361,7 +375,7 @@
     .form-discount
     > div
     button {
-    font-size: 1.4rem;
+    font-size: 1.17rem;
     padding: 10px 20px;
   }
   .condition-modal {
@@ -400,6 +414,7 @@
       .img {
         width: 100%;
         max-width: 70px;
+        margin-right: 10px;
       }
       &:last-child {
         margin-bottom: 10px;
@@ -407,6 +422,7 @@
       .list_details_item-info {
         display: flex;
         flex-direction: column;
+        font-size: 1.17rem;
         .list_details_item-bottom {
           display: flex;
           justify-content: space-between;
@@ -416,8 +432,9 @@
             display: flex;
             align-items: flex-end;
             margin-top: -8px;
+            font-size: 1.17rem;
             .btn-default {
-              font-size: 1.5rem;
+              font-size: 1.17rem;
             }
           }
         }
@@ -431,7 +448,30 @@
     margin-right: 5px;
     font-size: 1.2rem;
     span {
-      font-size: 1.6rem;
+      font-size: 1.17rem;
     }
+  }
+  .cart_container
+    .cart-contents
+    .cart-item-list
+    .cart-item-right
+    .checkout-container
+    .checkout-list
+    .checkout-item {
+    font-size: 1.17rem;
+  }
+  .cart_container
+    .cart-contents
+    .cart-item-list
+    .cart-item-right
+    .checkout-container
+    .method-payment
+    .payment-contents
+    img {
+    width: 26px;
+    font-size: 1.17rem;
+  }
+  .cart-item-right .checkout-container .term {
+    font-size: 1.17rem;
   }
 }

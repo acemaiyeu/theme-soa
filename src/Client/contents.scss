@@ -68,9 +68,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    border-top-right-radius: 50px;
+    overflow: hidden;
     // padding: 10px;
-    border: 1px solid rgba(238, 238, 238, 0.3);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    // border: 1px solid rgba(238, 238, 238, 0.3);
+    // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     border-radius: 3px;
     position: relative;
@@ -82,8 +84,9 @@
       top: 0;
       border: 1px solid black;
       left: 0;
-      border-top-right-radius: 3px;
-      border-top-left-radius: 3px;
+      border-top-right-radius: 10px;
+      border-top-left-radius: 10px;
+      overflow: hidden;
       img {
         border-top-right-radius: 3px;
         border-top-left-radius: 3px;

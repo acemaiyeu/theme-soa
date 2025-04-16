@@ -50,7 +50,11 @@ class Nav extends React.Component {
       .get(url_api_v0 + "sessions")
       .then((response) => {
         this.setState({ sessions: response.data });
-        if (response.data.data.session_id === "") {
+
+        if (
+          response.data.data.session_id === "" ||
+          response.data.data.session_id === null
+        ) {
           let sessionId = this.generateSessionId();
           axios
             .post(url_api_v0 + "sessions", {
