@@ -5,6 +5,10 @@ import { url_api_v0, url_api_v1, url_api_logout } from "../config";
 import axios from "axios";
 import ModalCart from "./ModalCart";
 import BoxNumber from "./BoxNumber";
+import { connect } from "react-redux";
+import { logout } from "../service/UserService";
+import { fetchProfile } from "../store/actions/fetchCartAndProfile";
+
 import icon_laravel from "../../src/assets/images/Laravel-Logo.wine.png";
 import icon_spring from "../../src/assets/images/Spring_Boot.svg.png";
 import icon_swing from "../../src/assets/images/javaSwwing.png";
@@ -75,62 +79,26 @@ class Nav extends React.Component {
         console.error("Có lỗi khi gọi API:", error);
       });
   };
-  getProfile = () => {
-    axios
-      .get(url_api_v1 + "profile", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      })
-      .then((response) => {
-        this.setState({ profile: response.data });
-      })
-      .catch((error) => {
-        console.error("Có lý khi gọi API get profile:", error);
-      });
-  };
-  getCart = () => {
-    axios
-      .get(url_api_v0 + "cart?session_id=" + localStorage.getItem("sessionId"))
 
-      .then((response) => {
-        this.setState({
-          cart: response.data,
-        });
-
-        localStorage.setItem("cart", JSON.stringify(response.data));
-        if (Array.isArray(response.data?.data)) {
-          this.setState({
-            cart: null,
-          });
-          localStorage.removeItem("cart");
-          this.props.history.push("/");
-        }
-      })
-      .catch((error) => {
-        console.error("Có lỗi khi gọi API get Cart:", error);
-      });
-  };
-  logout = () => {
-    axios
-      .post(url_api_logout, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      })
-      .then((response) => {
-        localStorage.removeItem("token");
-        this.getProfile();
-      })
-      .catch((error) => {
-        console.error("Có lý khi gọi API logout:", error);
-      });
-  };
   handleChangeCategoryList = () => {
     this.setState({ category_list: !this.state.category_list });
   };
   componentDidMount = () => {
-    this.getSessionId();
+    // this.getSessionId();
     // if (this.state.cart !== null) {
-    this.getCart();
-    this.getProfile();
+    // this.getCart();
+    // this.getProfile();
     // }
+  };
+  componentDidUpdate(prevProps) {
+    // Chỉ cập nhật state nếu profile thay đổi
+    if (prevProps.profile !== this.props.profile) {
+      this.setState({ profile: this.props.profile });
+    }
+  }
+  handleLogout = () => {
+    logout();
+    this.props.getProfile();
   };
   render() {
     let { isSearch, category_list } = this.state;
@@ -745,11 +713,11 @@ class Nav extends React.Component {
                   <li className="cart" onClick={(e) => this.handleCart(e)}>
                     <i className="bi bi-cart"></i>
                     <ModalCart
-                      cart={this.state.cart?.data}
-                      cart_details={this.state.cart?.data?.details ?? []}
+                      cart={this.props.cart.data}
+                      cart_details={this.props.cart.data?.details ?? []}
                     />
                     <BoxNumber
-                      number={this.state.cart?.data?.details?.length ?? 0}
+                      number={this.props.cart.data?.details?.length ?? 0}
                     />
                   </li>
 
@@ -769,8 +737,11 @@ class Nav extends React.Component {
                             <li className="modal-item-customer">
                               <a href="/my-orders">Quản lý đơn hàng</a>
                             </li>
-                            <li className="modal-item-customer">
-                              <a href="#">Đăng xuất</a>
+                            <li
+                              className="modal-item-customer"
+                              onClick={() => this.handleLogout()}
+                            >
+                              <a>Đăng xuất</a>
                             </li>
                           </>
                         )}
@@ -817,4 +788,13 @@ class Nav extends React.Component {
     );
   }
 }
-export default withRouter(Nav);
+const mapStateToProps = (state) => ({
+  profile: state.profile,
+  cart: state.cart,
+});
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getProfile: () => dispatch(fetchProfile()),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Nav));

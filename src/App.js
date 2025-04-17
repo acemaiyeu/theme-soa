@@ -3,7 +3,7 @@ import "./App.css";
 import Home from "./Client/Home";
 import Detail from "./Client/Detail";
 import Nav from "./Client/Nav";
-import { BrowserRouter, Switch, Route, useLocation } from "react-router-dom";
+import { Switch, Route, useLocation } from "react-router-dom";
 import Cart from "./Client/Cart";
 import NavAdmin from "./Admin/NavAdmin";
 import AdminHome from "./Admin/AdminHome";
@@ -17,18 +17,27 @@ import LoginAndRegister from "./Client/LoginAndRegister";
 import Profile from "./Client/Profile";
 import MyOrders from "./Client/MyOrders";
 import DetailOrder from "./Client/DetailOrder";
+import { connect } from "react-redux";
+import { fetchCartAndProfile } from "./store/actions/fetchCartAndProfile";
+
 class App extends React.Component {
   state = {
     time: new Date().toLocaleTimeString(),
   };
+  componentDidMount() {
+    this.props.fetchCartAndProfile();
+  }
   render() {
-    return (
-      <BrowserRouter>
-        <AppContent time={this.state.time} />
-      </BrowserRouter>
-    );
+    return <AppContent time={this.state.time} />;
   }
 }
+const mapStateToProps = (state) => ({
+  cart: state.cart,
+  profile: state.profile,
+});
+const mapDispatchToProps = {
+  fetchCartAndProfile,
+};
 
 function AppContent() {
   const location = useLocation(); // ✅ OK vì đang trong BrowserRouter rồi
@@ -95,4 +104,4 @@ function AppContent() {
   );
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);

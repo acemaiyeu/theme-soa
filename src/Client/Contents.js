@@ -3,6 +3,7 @@ import "./contents.scss";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 import { url_api_v0 } from "../config";
+import { connect } from "react-redux";
 class Contents extends React.Component {
   state = {
     description: { type: "description" },
@@ -29,12 +30,26 @@ class Contents extends React.Component {
         console.error("Có lỗi khi gọi API:", error);
       });
   };
+  handleDeleteUser = (user) => {
+    this.props.deleteUserRedux(user);
+  };
   render() {
     let listThemes = this.state.listThemes.data;
-    // console.log(listThemes);
+    let listUsers = this.props.dataRedux;
     return (
       <>
         <div className="contents">
+          {listUsers &&
+            listUsers.length > 0 &&
+            listUsers.map((item, index) => {
+              return (
+                <div key={item.id}>
+                  {" "}
+                  {index + 1} - {item.name}{" "}
+                  <span onClick={() => this.handleDeleteUser(item)}>x</span>
+                </div>
+              );
+            })}
           <div className="header-filter">
             <div className="header-filter-box">
               <div className="header-filter-item">
@@ -119,5 +134,19 @@ class Contents extends React.Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    dataRedux: state.users,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteUserRedux: (userDelete) =>
+      dispatch({ type: "DELETE_USER", payload: userDelete }),
+  };
+};
 
-export default withRouter(Contents);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Contents));

@@ -1,10 +1,13 @@
 import React from "react";
 import "./Details.scss";
-import { addToCart } from "./CartFunctions";
+
 import { url_api_v0 } from "../config";
 import parse from "html-react-parser";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { connect } from "react-redux";
+import { addToCart } from "./CartFunctions";
+import { fetchCart } from "../store/actions/fetchCartAndProfile";
 // import "./Home.scss";
 class Detail extends React.Component {
   state = {
@@ -14,32 +17,20 @@ class Detail extends React.Component {
   handleDescription = (type) => {
     this.setState({ description: { type } });
   };
-  handleAddToCart = (theme_id) => {
-    addToCart(theme_id);
-    this.getCart();
-  };
-  getCart = () => {
-    axios
-      .get(url_api_v0 + "cart?session_id=" + localStorage.getItem("sessionId"))
+  handleAddToCart = async (theme_id) => {
+    // Gọi hàm addToCart và đợi kết quả trả về
+    const result = await addToCart(theme_id);
 
-      .then((response) => {
-        this.setState({
-          cart: response.data,
-        });
-
-        localStorage.setItem("cart", JSON.stringify(response.data));
-        if (Array.isArray(response.data?.data)) {
-          this.setState({
-            cart: null,
-          });
-          localStorage.removeItem("cart");
-          this.props.history.push("/");
-        }
-      })
-      .catch((error) => {
-        console.error("Có lỗi khi gọi API get Cart:", error);
-      });
+    if (result) {
+      // Nếu addToCart thành công, gọi fetchCart sau một khoảng thời gian
+      setTimeout(() => {
+        this.props.getCart();
+      }, 500);
+    } else {
+      console.log("Lỗi khi thêm vào giỏ hàng");
+    }
   };
+
   getDetail = () => {
     let { path } = this.props.match.params;
     let theme_code = path.replace("-", "           ").slice(-15).trim();
@@ -239,5 +230,12 @@ class Detail extends React.Component {
     );
   }
 }
-
-export default Detail;
+const mapStateToProps = (state) => ({
+  cart: state.cart,
+});
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getCart: () => dispatch(fetchCart()),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Detail);

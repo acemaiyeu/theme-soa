@@ -266,11 +266,11 @@ button:hover {
   .container-detail .content .content__item .right .gift-container {
     width: 100%;
     padding: 0 2px;
-    font-size: 1.3rem;
+    font-size: 1.17rem;
   }
   .container-detail .content .content__item .right .required-container {
     width: 100%;
-    font-size: 1.3rem;
+    font-size: 1.17rem;
   }
   .container-detail
     .info
@@ -324,6 +324,21 @@ button:hover {
     margin-bottom: 30px;
   }
   .container-detail .info .slider .slider-content {
-    font-size: 1.3rem;
+    font-size: 1.17rem;
+  }
+  .container-detail .content .content__item .right h3 {
+    font-size: 1.6rem;
+  }
+  .container-detail .content .content__item .right h4,
+  .container-detail .content .content__item .right h3,
+  .container-detail .content .content__item .right p {
+    font-size: 1.17rem;
+  }
+  .--price-none-space {
+    font-size: 1.17rem;
+    margin: auto 200px auto auto;
+  }
+  .container-detail .info .slider .slider-tab .slider-tab-item {
+    font-size: 1.5rem;
   }
 }

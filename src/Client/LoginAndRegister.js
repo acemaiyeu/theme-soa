@@ -7,6 +7,11 @@ import { url_api_login, url_api_v1 } from "../config";
 class LoginAndRegister extends React.Component {
   state = {
     status: "login",
+    password: "",
+    confirm_password: "",
+    fullname: "",
+    email: "",
+    phone: "",
   };
   handleChangeForm = () => {
     if (this.state.status === "login") {

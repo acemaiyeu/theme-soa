@@ -2,6 +2,12 @@ import React from "react";
 import { url_api_v1 } from "../config";
 import axios from "axios";
 import "./Profile.scss";
+import { toast } from "react-toastify";
+import { connect } from "react-redux";
+import {
+  fetchProfile,
+  updateProfile,
+} from "../store/actions/fetchCartAndProfile";
 
 class Profile extends React.Component {
   state = {
@@ -14,22 +20,14 @@ class Profile extends React.Component {
     isChangePassword: false,
   };
   getProfile = () => {
-    axios
-      .get(url_api_v1 + "profile", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      })
-      .then((response) => {
-        this.setState({ profile: response.data });
-      })
-      .catch((error) => {
-        console.error("Có lý khi gọi API get profile:", error);
-      });
+    this.setState({ profile: this.props.profile });
   };
   handleChange = (e) => {
     if (e.target.name === "fullname") {
       this.setState({
         profile: {
           data: {
+            ...this.state.profile.data,
             fullname: e.target.value,
           },
         },
@@ -39,6 +37,7 @@ class Profile extends React.Component {
       this.setState({
         profile: {
           data: {
+            ...this.state.profile.data,
             email: e.target.value,
           },
         },
@@ -48,6 +47,7 @@ class Profile extends React.Component {
       this.setState({
         profile: {
           data: {
+            ...this.state.profile.data,
             phone: e.target.value,
           },
         },
@@ -62,7 +62,17 @@ class Profile extends React.Component {
   componentDidMount() {
     this.getProfile();
   }
-
+  componentDidUpdate(prevProps) {
+    if (prevProps.profile !== this.props.profile && this.props.profile?.data) {
+      const profile = this.props.profile;
+      this.setState({
+        profile,
+      });
+    }
+  }
+  handleUpdateProfile = () => {
+    this.props.updateProfile(this.state.profile.data);
+  };
   render() {
     return (
       <>
@@ -109,7 +119,10 @@ class Profile extends React.Component {
                 </div>
               </div> */}
                   <div className="form-control-profile">
-                    <button className="btn-default btn-bg-orange-op-5">
+                    <button
+                      className="btn-default btn-bg-orange-op-5"
+                      onClick={() => this.handleUpdateProfile()}
+                    >
                       Lưu
                     </button>
                     <a onClick={() => this.handleChangePassword()}>
@@ -183,4 +196,12 @@ class Profile extends React.Component {
     );
   }
 }
-export default Profile;
+const mapStateToProps = (state) => ({
+  profile: state.profile,
+});
+const mapDispatchToProps = (dispatch) => ({
+  getProfile: () => dispatch(fetchProfile()),
+  updateProfile: (user) => dispatch(updateProfile(user)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

@@ -5,7 +5,12 @@ import { url_api_v0 } from "../config";
 import { Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import { updateCartInfo } from "../service/Cart/updateCartInfo";
+import { connect } from "react-redux";
+import {
+  fetchCart,
+  fetchCartAndProfile,
+} from "../store/actions/fetchCartAndProfile";
 class Cart extends React.Component {
   state = {
     checkout: [
@@ -17,29 +22,7 @@ class Cart extends React.Component {
       },
       { title: "Thành tiền", value: 90000000 },
     ],
-    listDiscounts: [
-      // {
-      //   title:
-      //     "Giảm giá 10% khi mua hàng trên 10 triệu, Giảm giá 10% khi mua hàng trên 10 triệu",
-      //   value: 10000000,
-      //   condition: "Đơn hàng phải trên 10 triệu",
-      // },
-      // {
-      //   title: "Giảm giá 20%",
-      //   value: 20000000,
-      //   condition: "Đơn hàng phải trên 20 triệu",
-      // },
-      // {
-      //   title: "Giảm giá 30%",
-      //   value: 20000000,
-      //   condition: "Đơn hàng phải trên 30 triệu",
-      // },
-      // {
-      //   title: "Giảm giá 40%",
-      //   value: 20000000,
-      //   condition: "Đơn hàng phải trên 40 triệu",
-      // },
-    ],
+    listDiscounts: [],
     isShowCondition: -1,
     isChecked: false,
   };
@@ -91,53 +74,47 @@ class Cart extends React.Component {
     }));
   };
 
-  componentDidMount = () => {
-    let cart = JSON.parse(localStorage.getItem("cart"));
+  getCart = async () => {
+    try {
+      // Gọi hàm getCart và đợi nó hoàn thành
+      await this.props.getCart();
+      let cart = this.props.cart;
 
-    if (!cart) {
+      if (cart.data) {
+        this.getDiscount();
+        this.setState({
+          cart,
+          fullname: cart?.data?.fullname ?? "",
+          email: cart?.data?.user_email ?? "",
+          phone: cart?.data?.user_phone ?? "",
+        });
+        return;
+      }
+
       alert("Không tìm thấy giỏ hàng");
       localStorage.removeItem("cart");
       this.props.history.push("/");
-      return;
+    } catch (error) {
+      console.error("Lỗi khi lấy giỏ hàng:", error);
+      alert("Có lỗi khi lấy dữ liệu giỏ hàng");
     }
-    this.getDiscount();
-    this.setState({
-      cart,
-      fullname: cart?.data?.fullname ?? "",
-      email: cart?.data?.user_email ?? "",
-      phone: cart?.data?.user_phone ?? "",
-    });
   };
-  updateCartInfo = () => {
-    const { fullname, user_email, user_phone } = this.state.cart?.data || {};
-
-    if (!fullname) {
-      alert("Vui lòng nhập họ tên");
-      return;
-    }
-    if (!user_email) {
-      alert("Vui lòng nhập email");
-      return;
-    }
-    if (!user_phone) {
-      alert("Vui lòng nhập số điện thoại");
-      return;
-    }
-    axios
-      .put(
-        url_api_v0 +
-          "updateCartInfo?session_id=" +
-          localStorage.getItem("sessionId"),
-        this.state.cart?.data
-      )
-      .then((response) => {
-        localStorage.setItem("cart", JSON.stringify(response.data));
-        toast.success("Cập nhật thông tin giỏ hàng thành công");
-      })
-      .catch((error) => {
-        console.log(error);
+  componentDidMount = () => {
+    this.getCart();
+  };
+  componentDidUpdate(prevProps) {
+    if (prevProps.cart !== this.props.cart && this.props.cart?.data) {
+      const cart = this.props.cart;
+      this.getDiscount();
+      this.setState({
+        cart,
+        fullname: cart.data.fullname ?? "",
+        email: cart.data.user_email ?? "",
+        phone: cart.data.user_phone ?? "",
       });
-  };
+    }
+  }
+
   getDiscount = () => {
     axios
       .get(url_api_v0 + "discounts")
@@ -279,6 +256,9 @@ class Cart extends React.Component {
     // this.setState({ isShowCondition: !this.state.isShowCondition });
   };
   changeTerm = () => {};
+  handleUpdateCartInfo = () => {
+    updateCartInfo(this.state.cart?.data);
+  };
   render() {
     let { listDiscounts, isShowCondition, cart } = this.state;
     return (
@@ -320,9 +300,9 @@ class Cart extends React.Component {
             </form>
             <button
               className="btn-default btn-bg-orange-op-5"
-              onClick={() => this.updateCartInfo()}
+              onClick={() => this.handleUpdateCartInfo()}
             >
-              <i class="bi bi-arrow-repeat"></i>
+              <i className="bi bi-arrow-repeat"></i>
             </button>
           </div>
           <div className="cart-item-list">
@@ -550,5 +530,13 @@ class Cart extends React.Component {
     );
   }
 }
+const mapStateToProps = (state) => ({
+  cart: state.cart,
+});
 
-export default withRouter(Cart);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getCart: () => dispatch(fetchCart()), // Trả về Promise
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Cart));
