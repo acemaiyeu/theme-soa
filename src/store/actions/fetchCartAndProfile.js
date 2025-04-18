@@ -20,7 +20,6 @@ const getProfile = async () => {
 // Hàm gọi API lấy giỏ hàng
 const getCart = async (retry = true) => {
   try {
-    console.log("Đang chạy getCart");
     const sessionId = localStorage.getItem("sessionId");
     const response = await axios.get(
       `${url_api_v0}cart?session_id=${sessionId}`
@@ -82,7 +81,6 @@ export const fetchProfile = () => {
 export const updateProfile = (user) => {
   return async (dispatch) => {
     try {
-      const profileData = {};
       axios
         .put(url_api_v1 + "profile", user, {
           headers: {
@@ -90,16 +88,13 @@ export const updateProfile = (user) => {
           },
         })
         .then((response) => {
-          profileData = response.data;
+          dispatch({ type: "SET_PROFILE", payload: response.data });
           toast.success("Cập nhật thông tin người dùng thành công");
         })
         .catch((error) => {
+          console.log("Lỗi khi cập nhật profile", error);
           toast.error("Lỗi khi update profile");
         });
-
-      if (profileData) {
-        dispatch({ type: "SET_PROFILE", payload: profileData });
-      }
     } catch (error) {
       console.error("Lỗi khi fetchProfile:", error);
     }

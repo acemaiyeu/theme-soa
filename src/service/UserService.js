@@ -1,6 +1,7 @@
 import { url_api_logout, url_api_register, 
   
  } from "../config";
+
 import axios from "axios";
 export const logout = () => {
   axios
@@ -19,14 +20,20 @@ export const logout = () => {
       console.error("Có lý khi gọi API logout:", error);
     });
 };
-export const register = () => {
+export const register = ({ fullname, email, phone, password }) => {
   axios
     .post(url_api_register, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      fullname: fullname,
+      email: email,
+      phone: phone,
+      password: password,
     })
     .then((response) => {
-      localStorage.removeItem("token");
-      this.getProfile();
+      localStorage.setItem("token", response.data.access_token);
+      localStorage.setItem("expires_in", response.data.expires_in);
+      toast.success("Đăng ký tài khoảng thành công");
+      window.location.href = "/";
+      window.location.reload();
     })
     .catch((error) => {
       console.error("Có lý khi gọi API logout:", error);
