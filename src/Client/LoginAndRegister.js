@@ -3,6 +3,7 @@ import "./LoginAndRegister.scss";
 import logo from "../assets/images/logo2.png";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { register } from "../service/UserService";
 import { url_api_login, url_api_v1 } from "../config";
 class LoginAndRegister extends React.Component {
   state = {
@@ -10,7 +11,7 @@ class LoginAndRegister extends React.Component {
     password: "",
     confirm_password: "",
     fullname: "",
-    email: "",
+    email: "@gmail.com",
     phone: "",
   };
   handleChangeForm = () => {
@@ -20,7 +21,52 @@ class LoginAndRegister extends React.Component {
       this.setState({ status: "login" });
     }
   };
-  register = () => {};
+  register = () => {
+    let { fullname, email, phone, password, confirm_password } = this.state;
+    if (
+      (email.trim().slice(-10) !== "@gmail.com" &&
+        email.trim().slice(-10) !== "@GMAIL.COM") ||
+      email.length < 15
+    ) {
+      toast.warning(
+        "Vui lòng nhập email với định dạng  ****@gmail.com. Tối thiểu 15 ký tự"
+      );
+      return;
+    }
+    if (fullname.length < 8) {
+      toast.warning("Họ và tên tối thiểu phải 8 ký tự");
+      return;
+    }
+    if (phone.length != 10 || phone.slice(0, 1) != "0") {
+      toast.warning("Số điện thoại không hợp lệ");
+      return;
+    }
+    if (!this.isValidPassword(password)) {
+      toast.warning(
+        "Mật khẩu tối thiểu phải 8 ký tự, có ít nhất 1 chữ thường, 1 chữ hoa, 1 số, 1 ký tự đặc biệt"
+      );
+      return;
+    }
+    if (password !== confirm_password) {
+      toast.warning("Nhập lại mật khẩu không trùng khớp");
+      return;
+    }
+    if (fullname.length < 8) {
+      toast.warning("Họ và tên tối thiểu phải 8 ký tự");
+      return;
+    }
+    register({
+      fullname: fullname,
+      email: email,
+      phone: phone,
+      password: password,
+    });
+  };
+  isValidPassword = (password) => {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+    return regex.test(password);
+  };
+
   login = () => {
     if (this.state.username === "" || this.state.password === "") {
       toast.warning("Vui lòng nhập đầy đủ thông tin");
@@ -60,6 +106,7 @@ class LoginAndRegister extends React.Component {
         toast.warning("Tài khoản và mật khẩu không đúng");
       });
   };
+
   render() {
     const { status } = this.state;
     return (
@@ -103,9 +150,25 @@ class LoginAndRegister extends React.Component {
                 <input
                   type="text"
                   placeholder="Email đăng nhập"
-                  name="username"
-                  value={this.state.username}
-                  onChange={(e) => this.setState({ username: e.target.value })}
+                  name="email"
+                  value={this.state.email}
+                  onChange={(e) => this.setState({ email: e.target.value })}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Họ và tên"
+                  name="fullname"
+                  value={this.state.fullname}
+                  onChange={(e) => this.setState({ fullname: e.target.value })}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Số điện thoại"
+                  name="phone"
+                  value={this.state.phone}
+                  onChange={(e) => this.setState({ phone: e.target.value })}
                   required
                 />
                 <input
@@ -120,8 +183,10 @@ class LoginAndRegister extends React.Component {
                   type="password"
                   placeholder="Nhập lại mật khẩu"
                   name="password"
-                  value={this.state.password_confirm}
-                  onChange={(e) => this.setState({ password: e.target.value })}
+                  value={this.state.confirm_password}
+                  onChange={(e) =>
+                    this.setState({ confirm_password: e.target.value })
+                  }
                   required
                 />
                 <button type="submit" onClick={() => this.register()}>
