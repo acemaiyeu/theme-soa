@@ -1,4 +1,6 @@
-import { url_api_logout, url_api_register, url_api_login } from "../config";
+import { url_api_logout, url_api_register, 
+  
+ } from "../config";
 import axios from "axios";
 export const logout = () => {
   axios
