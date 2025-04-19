@@ -112,7 +112,7 @@ class LoginAndRegister extends React.Component {
     const { status } = this.state;
     return (
       <div className="box-login">
-        <div class="login-container">
+        <div className="login-container">
           {status == "login" ? (
             <>
               <h2>ĐĂNG NHẬP</h2>
@@ -136,10 +136,10 @@ class LoginAndRegister extends React.Component {
                 <button type="submit" onClick={() => this.login()}>
                   Đăng nhập
                 </button>
-                <a class="forgot" onClick={() => this.handleChangeForm()}>
+                <a className="forgot" onClick={() => this.handleChangeForm()}>
                   Đăng ký
                 </a>
-                <a class="forgot" href="#">
+                <a className="forgot" href="/forgot">
                   Quên mật khẩu?
                 </a>
               </div>
@@ -193,7 +193,7 @@ class LoginAndRegister extends React.Component {
                 <button type="submit" onClick={() => this.register()}>
                   Đăng ký
                 </button>
-                <a class="forgot" onClick={() => this.handleChangeForm()}>
+                <a className="forgot" onClick={() => this.handleChangeForm()}>
                   Đăng nhập
                 </a>
               </div>
@@ -205,74 +205,3 @@ class LoginAndRegister extends React.Component {
   }
 }
 export default LoginAndRegister;
-
-// <div className="box-login">
-//   <div class="login-container">
-//     <h2>ĐĂNG NHẬP</h2>
-//     <div>
-//       <input
-//         type="text"
-//         placeholder="Tên đăng nhập"
-//         name="username"
-//         value={this.state.username}
-//         onChange={(e) => this.setState({ username: e.target.value })}
-//         required
-//       />
-//       <input
-//         type="password"
-//         placeholder="Mật khẩu"
-//         name="password"
-//         value={this.state.password}
-//         onChange={(e) => this.setState({ password: e.target.value })}
-//         required
-//       />
-//       <button type="submit" onClick={() => this.login()}>
-//         Đăng nhập
-//       </button>
-//       <a class="forgot" href="#">
-//         Đăng ký
-//       </a>
-//       <a class="forgot" href="#">
-//         Quên mật khẩu?
-//       </a>
-//     </div>
-//   </div>
-// </div>
-
-// <div className="box-login">
-//   <div class="login-container">
-// <h2>ĐĂNG KÝ</h2>
-// <div>
-//   <input
-//     type="text"
-//     placeholder="Email đăng nhập"
-//     name="username"
-//     value={this.state.username}
-//     onChange={(e) => this.setState({ username: e.target.value })}
-//     required
-//   />
-//   <input
-//     type="password"
-//     placeholder="Mật khẩu"
-//     name="password"
-//     value={this.state.password}
-//     onChange={(e) => this.setState({ password: e.target.value })}
-//     required
-//   />
-//   <input
-//     type="password"
-//     placeholder="Nhập lại mật khẩu"
-//     name="password"
-//     value={this.state.password_confirm}
-//     onChange={(e) => this.setState({ password: e.target.value })}
-//     required
-//   />
-//   <button type="submit" onClick={() => this.register()}>
-//     Đăng ký
-//   </button>
-//   <a class="forgot" href="#">
-//     Đăng nhập
-//   </a>
-// </div>
-//   </div>
-// </div>

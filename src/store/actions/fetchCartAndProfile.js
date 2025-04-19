@@ -101,3 +101,36 @@ export const updateProfile = (user) => {
     }
   };
 };
+export const changePassword = (changePassword) => {
+  return async (dispatch) => {
+    try {
+      axios
+        .put(
+          url_api_v1 + "change-password",
+          {
+            password: changePassword.password,
+            new_password: changePassword.password_new,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          dispatch({ type: "SET_PROFILE", payload: response.data });
+          toast.success("Đổi mật khẩu thành công");
+          window.location.reload();
+        })
+        .catch((error) => {
+          // console.log(
+          //   "Lỗi khi cập nhật mật khẩu",
+          //   error?.response?.data?.error?.message
+          // );
+          toast.error(error?.response?.data?.error?.message);
+        });
+    } catch (error) {
+      console.error("Lỗi khi fetchProfile:", error);
+    }
+  };
+};

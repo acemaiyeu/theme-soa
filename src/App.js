@@ -19,6 +19,7 @@ import MyOrders from "./Client/MyOrders";
 import DetailOrder from "./Client/DetailOrder";
 import { connect } from "react-redux";
 import { fetchCartAndProfile } from "./store/actions/fetchCartAndProfile";
+import forGetPassword from "./Client/forGetPassword";
 
 class App extends React.Component {
   state = {
@@ -55,6 +56,7 @@ function AppContent() {
           <Route path="/my-orders" exact component={MyOrders} />
           <Route path="/my-order/:code" component={DetailOrder} />
           <Route path="/login" exact component={LoginAndRegister} />
+          <Route path="/forgot" exact component={forGetPassword} />
           {isAdminRoute ? (
             <>
               <Route path="/admin/login" exact component={LoginAdmin} />
