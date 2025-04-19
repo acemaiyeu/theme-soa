@@ -1,8 +1,8 @@
 import React from "react";
-import { url_api_v1 } from "../config";
 import axios from "axios";
 import "./MyOrders.scss";
 import { toast } from "react-toastify";
+const url_api_v1 = process.env.REACT_APP_URL_API_V1;
 
 class MyOrders extends React.Component {
   state = {

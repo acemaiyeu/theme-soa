@@ -1,8 +1,5 @@
 import React from "react";
-import { url_api_v1 } from "../config";
-import axios from "axios";
 import "./Profile.scss";
-import { toast } from "react-toastify";
 import { connect } from "react-redux";
 import {
   fetchProfile,

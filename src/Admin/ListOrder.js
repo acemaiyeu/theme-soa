@@ -3,7 +3,8 @@ import "./ListOrder.scss";
 import "./bootstrap4.css";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
-import { url_api_v1 } from "../config";
+
+const url_api_v1 = process.env.REACT_APP_URL_API_V1;
 
 class ListOrder extends React.Component {
   state = {

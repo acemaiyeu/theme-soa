@@ -1,27 +1,27 @@
 import React from "react";
 import "./Cart.scss";
 import axios from "axios";
-import { url_api_v0 } from "../config";
 import { Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
-import { updateCartInfo } from "../service/Cart/updateCartInfo";
 import { connect } from "react-redux";
 import {
   fetchCart,
   fetchCartAndProfile,
 } from "../store/actions/fetchCartAndProfile";
+
+const url_api_v0 = process.env.REACT_APP_URL_API_V0;
 class Cart extends React.Component {
   state = {
-    checkout: [
-      { title: "Tổng tiền hàng", value: 100000000 },
-      {
-        title:
-          "Giảm giá 10% khi mua hàng trên 10 triệu, Giảm giá 10% khi mua hàng trên 10 triệu",
-        value: -10000000,
-      },
-      { title: "Thành tiền", value: 90000000 },
-    ],
+    // checkout: [
+    //   { title: "Tổng tiền hàng", value: 100000000 },
+    //   {
+    //     title:
+    //       "Giảm giá 10% khi mua hàng trên 10 triệu, Giảm giá 10% khi mua hàng trên 10 triệu",
+    //     value: -10000000,
+    //   },
+    //   { title: "Thành tiền", value: 90000000 },
+    // ],
     listDiscounts: [],
     isShowCondition: -1,
     isChecked: false,
@@ -257,7 +257,37 @@ class Cart extends React.Component {
   };
   changeTerm = () => {};
   handleUpdateCartInfo = () => {
-    updateCartInfo(this.state.cart?.data);
+    this.updateCartInfo(this.state.cart?.data);
+  };
+  updateCartInfo = (cart) => {
+    console.log(cart);
+    if (!cart.fullname) {
+      alert("Vui lòng nhập họ tên");
+      return;
+    }
+    if (!cart.user_email) {
+      alert("Vui lòng nhập email");
+      return;
+    }
+    if (!cart.user_phone) {
+      alert("Vui lòng nhập số điện thoại");
+      return;
+    }
+    axios
+      .put(
+        url_api_v0 +
+          "updateCartInfo?session_id=" +
+          localStorage.getItem("sessionId"),
+        this.state.cart?.data
+      )
+      .then((response) => {
+        // chỗ này gọi fetchCart trong file fetchCartAndProfile
+        this.props.getCart();
+        toast.success("Cập nhật thông tin giỏ hàng thành công");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   render() {
     let { listDiscounts, isShowCondition, cart } = this.state;

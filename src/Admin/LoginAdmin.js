@@ -1,9 +1,11 @@
 import React from "react";
 import "./LoginAdmin.scss";
 import axios from "axios";
-import { url_api_login, url_api_v1 } from "../config";
 import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 import { toast } from "react-toastify";
+
+const url_api_v1 = process.env.REACT_APP_URL_API_V1;
+const url_api_login = process.env.REACT_APP_URL_API_LOGIN;
 class LoginAdmin extends React.Component {
   state = {
     username: "",

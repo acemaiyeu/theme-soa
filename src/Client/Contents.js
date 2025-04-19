@@ -2,8 +2,9 @@ import React from "react";
 import "./contents.scss";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
-import { url_api_v0 } from "../config";
 import { connect } from "react-redux";
+
+const url_api_v0 = process.env.REACT_APP_URL_API_V0;
 class Contents extends React.Component {
   state = {
     description: { type: "description" },
@@ -21,6 +22,7 @@ class Contents extends React.Component {
     this.props.history.push(`/detail/${item.title} - ${item.code}`);
   };
   componentDidMount = () => {
+    console.log("CHECK URL CONTENT: ", url_api_v0);
     axios
       .get(url_api_v0 + "themes")
       .then((response) => {

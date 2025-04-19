@@ -1,6 +1,7 @@
 import axios from "axios";
-import { url_api_v1, url_api_v0 } from "../../config";
 import { toast } from "react-toastify";
+const url_api_v0 = process.env.REACT_APP_URL_API_V0;
+const url_api_v1 = process.env.REACT_APP_URL_API_V1;
 
 // Hàm gọi API lấy thông tin người dùng
 const getProfile = async () => {

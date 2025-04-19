@@ -1,6 +1,8 @@
 import { toast } from "react-toastify";
-import { url_api_logout, url_api_register, url_api_login } from "../config";
 import axios from "axios";
+const url_api_logout = process.env.REACT_APP_URL_API_LOGOUT;
+const url_api_register = process.env.REACT_APP_URL_API_REGISTER;
+
 export const logout = () => {
   axios
     .post(

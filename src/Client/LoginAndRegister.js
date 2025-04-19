@@ -4,7 +4,8 @@ import logo from "../assets/images/logo2.png";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { register } from "../service/UserService";
-import { url_api_login, url_api_v1 } from "../config";
+
+const url_api_login = process.env.REACT_APP_URL_API_LOGIN;
 class LoginAndRegister extends React.Component {
   state = {
     status: "login",

@@ -1,10 +1,9 @@
 import React from "react";
 import "./Cart.scss";
 import axios from "axios";
-import { url_api_v0 } from "../config";
-import { Fragment } from "react";
 import { withRouter } from "react-router-dom";
-import { toast } from "react-toastify";
+
+const url_api_v0 = process.env.REACT_APP_URL_API_V0;
 
 class DetailOrder extends React.Component {
   state = {

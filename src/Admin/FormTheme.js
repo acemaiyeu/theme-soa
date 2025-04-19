@@ -4,8 +4,9 @@ import "react-quill/dist/quill.snow.css";
 import DescriptionComponent from "./DescriptionComponent";
 import RequiredComponent from "./RequiredComponent";
 import { toast } from "react-toastify";
-import { url_api_v1 } from "../config";
 import axios from "axios";
+
+const url_api_v1 = process.env.REACT_APP_URL_API_V1;
 // const modules = {
 //   toolbar: [
 //     [{ header: [1, 2, false] }],

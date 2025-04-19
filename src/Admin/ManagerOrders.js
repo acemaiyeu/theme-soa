@@ -1,8 +1,8 @@
 import React from "react";
 import "./ManagerOrder.scss";
-import { url_api_v1 } from "../config";
 import axios from "axios";
 
+const url_api_v1 = process.env.REACT_APP_URL_API_V1;
 class ManagerOrders extends React.Component {
   state = {
     listOrders: [],

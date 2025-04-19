@@ -2,7 +2,8 @@ import React from "react";
 import "./Theme.scss";
 import FormTheme from "./FormTheme";
 import axios from "axios";
-import { url_api_v1 } from "../config";
+
+const url_api_v1 = process.env.REACT_APP_URL_API_V1;
 class Theme extends React.Component {
   state = {
     ListTheme: [],

@@ -1,6 +1,5 @@
 import React from "react";
 import "./ChartSixMonthOfYear.scss";
-import { url_api_v1 } from "../config";
 import axios from "axios";
 import {
   AreaChart,
@@ -20,6 +19,7 @@ import {
 //   { name: "Tháng 5", uv: 78, pv: 60 },
 //   { name: "Tháng 6", uv: 90, pv: 20 },
 // ];
+const url_api_v1 = process.env.REACT_APP_URL_API_V1;
 class ChartSixMonthOfYear extends React.Component {
   state = {
     data: [

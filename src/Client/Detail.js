@@ -1,7 +1,6 @@
 import React from "react";
 import "./Details.scss";
 
-import { url_api_v0 } from "../config";
 import parse from "html-react-parser";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -9,6 +8,7 @@ import { connect } from "react-redux";
 import { addToCart } from "./CartFunctions";
 import { fetchCart } from "../store/actions/fetchCartAndProfile";
 // import "./Home.scss";
+const url_api_v0 = process.env.REACT_APP_URL_API_V0;
 class Detail extends React.Component {
   state = {
     description: { type: "description" },

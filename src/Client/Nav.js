@@ -1,7 +1,6 @@
 import React from "react";
 import "./Nav.scss";
 import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
-import { url_api_v0, url_api_v1, url_api_logout } from "../config";
 import axios from "axios";
 import ModalCart from "./ModalCart";
 import BoxNumber from "./BoxNumber";
@@ -24,8 +23,8 @@ import question_icon from "../../src/assets/images/qyuestion_icon.png";
 import q_a_icon from "../../src/assets/images/qa.png";
 import icon_database from "../../src/assets/images/database.png";
 import icon_rest_api from "../../src/assets/images/rest_api2.png";
-import icon_post from "../../src/assets/images/post.jpg";
 import icon_help from "../../src/assets/images/help.png";
+const url_api_v0 = process.env.REACT_APP_URL_API_V0;
 class Nav extends React.Component {
   state = {
     isSearch: false,

@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
-import { url_api_v0 } from "../config";
 import axios from "axios";
 
+const url_api_v0 = process.env.REACT_APP_URL_API_V0;
 export const addToCart = async (theme_id) => {
   let token = localStorage.getItem("token");
   let result = false; // Mặc định là false

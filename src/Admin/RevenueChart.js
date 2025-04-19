@@ -2,8 +2,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
-import { url_api_v1 } from "../config";
 
+const url_api_v1 = process.env.REACT_APP_URL_API_V1;
 const RevenueChart = () => {
   const [state, setState] = useState({
     data: [400, 400, 400, 400, 400, 500],
