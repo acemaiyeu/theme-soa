@@ -1,26 +1,25 @@
-FROM node:16
+# Stage 1: Build app using Node.js 16
+FROM node:16-alpine AS builder
 
 WORKDIR /app
 
-# Sao chép file package trước để tận dụng bộ nhớ đệm
-COPY package.json ./
-
-# Cài đặt dependencies
+COPY package*.json ./
 RUN npm install --legacy-peer-deps
 
-# Sao chép toàn bộ mã nguồn
-COPY . .
 
-# Xây dựng ứng dụng
+COPY . .
 RUN npm run build
 
-RUN npm install -g javascript-obfuscator && \
-    javascript-obfuscator build/ --output build-obfuscated/ && \
-    rm -rf build && \
-    mv build-obfuscated build
-    
-# Mở cổng (nếu cần)
+
+# Stage 2: Serve with nginx
+FROM nginx:stable-alpine
+
+# Copy build output from previous stage
+COPY --from=builder /app/build /usr/share/nginx/html
+
+# Optional: custom nginx config
+# COPY nginx.conf /etc/nginx/nginx.conf
+
 EXPOSE 3000
 
-# Lệnh chạy ứng dụng (tùy chỉnh nếu cần)
-CMD ["npm", "start"]
+CMD ["nginx", "-g", "daemon off;"]

@@ -83,7 +83,7 @@ class Nav extends React.Component {
     this.setState({ category_list: !this.state.category_list });
   };
   componentDidMount = () => {
-    // this.getSessionId();
+    this.getSessionId();
     // if (this.state.cart !== null) {
     // this.getCart();
     // this.getProfile();
