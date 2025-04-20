@@ -7,13 +7,20 @@ import { toast } from "react-toastify";
 import { connect } from "react-redux";
 import { addToCart } from "./CartFunctions";
 import { fetchCart } from "../store/actions/fetchCartAndProfile";
+
+import test1 from "../assets/images/test1.jpg";
+import test2 from "../assets/images/test2.jpg";
+import test3 from "../assets/images/test3.jpg";
 // import "./Home.scss";
 const url_api_v0 = process.env.REACT_APP_URL_API_V0;
 class Detail extends React.Component {
   state = {
     description: { type: "description" },
     theme: {},
+    previewModal: false,
+    isActive: 0,
   };
+
   handleDescription = (type) => {
     this.setState({ description: { type } });
   };
@@ -50,7 +57,8 @@ class Detail extends React.Component {
     this.getDetail();
   }
   render() {
-    let { description, theme } = this.state;
+    let { description, theme, previewModal, isActive } = this.state;
+    console.log(previewModal);
     return (
       <>
         <div className="container-detail">
@@ -84,7 +92,12 @@ class Detail extends React.Component {
                     <div className="icon">
                       <i className="bi bi-display"></i>
                     </div>
-                    <button className="button-add-to-cart">Xem demo</button>
+                    <button
+                      className="button-add-to-cart"
+                      onClick={() => this.setState({ previewModal: true })}
+                    >
+                      Xem demo
+                    </button>
                   </div>
                   <div className="btn-add-to-cart">
                     <div className="icon">
@@ -226,6 +239,64 @@ class Detail extends React.Component {
             </div>
           </div>
         </div>
+        {previewModal === true && (
+          <div className="preview-modal">
+            <div className="preview-modal-container">
+              <i
+                class="bi bi-x"
+                onClick={() => this.setState({ previewModal: false })}
+              ></i>
+              <div className="images">
+                <img alt="img" src={test1} />
+              </div>
+              <div className="image-list">
+                <div
+                  className={`images-item ${isActive == 0 ? "--active" : ""}`}
+                  onClick={() =>
+                    this.setState({ isActive: 0, previewModal: true })
+                  }
+                >
+                  <img alt="img" src={test1} />
+                </div>
+                <div
+                  className={`images-item ${isActive == 1 ? "--active" : ""}`}
+                  onClick={() =>
+                    this.setState({ isActive: 1, previewModal: true })
+                  }
+                >
+                  <img alt="img" src={test2} />
+                </div>
+                <div
+                  className={`images-item ${isActive == 2 ? "--active" : ""}`}
+                  onClick={() =>
+                    this.setState({ isActive: 2, previewModal: true })
+                  }
+                >
+                  <img alt="img" src={test3} />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {/* <div className="preview-modal">
+          <div className="preview-modal-container">
+            <i class="bi bi-x"></i>
+            <div className="images">
+              <img alt="img" src={test1} />
+            </div>
+            <div className="image-list">
+              <div className="images-item">
+                <img alt="img" src={test1} />
+              </div>
+              <div className="images-item">
+                <img alt="img" src={test2} />
+              </div>
+              <div className="images-item">
+                <img alt="img" src={test3} />
+              </div>
+            </div>
+          </div>
+        </div> */}
       </>
     );
   }
