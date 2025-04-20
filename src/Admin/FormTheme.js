@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import axios from "axios";
 
 const url_api_v1 = process.env.REACT_APP_URL_API_V1;
+const url_api_v0 = process.env.REACT_APP_URL_API_V0;
+const url_api_upload_image = process.env.REACT_APP_URL_API_UPLOAD_FILE;
 // const modules = {
 //   toolbar: [
 //     [{ header: [1, 2, false] }],
@@ -22,6 +24,9 @@ class FormTheme extends React.Component {
     value: "",
     setValue: "",
     theme: null,
+    url_image_temp: null,
+    gifts: [],
+    categories: [],
   };
 
   componentDidUpdate(prevProps) {
@@ -39,7 +44,23 @@ class FormTheme extends React.Component {
       theme: null,
     });
   };
+  handleChangeThumbnail = async (e) => {
+    // this.uploadImage(e.target.files[0]);
+    await this.uploadImage(e.target.files[0]);
 
+    setTimeout(() => {
+      let { url_image_temp } = this.state;
+      if (url_image_temp !== null) {
+        this.setState({
+          theme: {
+            ...this.state.theme,
+            thumbnail_img: url_image_temp,
+          },
+          url_image_temp: null,
+        });
+      }
+    }, 1000);
+  };
   // Hàm riêng cho long_description
   handleLongDescriptionChange = (content) => {
     this.setState((prevState) => ({
@@ -48,6 +69,108 @@ class FormTheme extends React.Component {
         long_description: content,
       },
     }));
+  };
+  handleAddImageSlider = async (e) => {
+    await this.uploadImage(e.target.files[0]);
+
+    setTimeout(() => {
+      let { url_image_temp, theme } = this.state;
+      console.log(url_image_temp, theme);
+      if (url_image_temp !== null) {
+        let slider = theme.slider ?? [];
+        slider.push(url_image_temp);
+        this.setState({
+          theme: {
+            ...this.state.theme,
+            slider: slider,
+          },
+        });
+      }
+    }, 1000);
+  };
+  handleDeleteImageSlider = (index) => {
+    let { theme } = this.state;
+    theme.slider.splice(index, 1);
+    this.setState({
+      theme: {
+        ...this.state.theme,
+        slider: theme.slider,
+      },
+    });
+  };
+  handleCategoryChange = (e) => [
+    this.setState({
+      theme: {
+        ...this.state.theme,
+        category_id: e.target.value,
+      },
+    }),
+  ];
+  handleFrameworkChange = (e) => [
+    this.setState({
+      theme: {
+        ...this.state.theme,
+        Framework: e.target.value,
+      },
+    }),
+  ];
+  handleGiftChange = (e) => [
+    this.setState({ theme: { ...this.state.theme, gift: e.target.value } }),
+  ];
+
+  uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const response = await axios.post(url_api_upload_image, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Có thể bỏ dòng này
+          Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
+        },
+      });
+
+      this.setState({
+        url_image_temp: response.data.link,
+      });
+
+      toast.success("Upload thành công!");
+      return response.data.filePath;
+    } catch (error) {
+      console.error("Lỗi upload ảnh:", error);
+      toast.error(
+        error?.response?.data?.message || "Lỗi upload ảnh không xác định"
+      );
+      return null;
+    }
+  };
+  getGifts = async () => {
+    try {
+      const response = await axios.get(url_api_v1 + "gifts", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
+        },
+      });
+      this.setState({
+        gifts: response.data.data,
+      });
+    } catch (error) {
+      console.error("Lỗi get Gifts:", error);
+    }
+  };
+  getCategories = async () => {
+    try {
+      const response = await axios.get(url_api_v0 + "categories", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
+        },
+      });
+      this.setState({
+        categories: response.data.data,
+      });
+    } catch (error) {
+      console.error("Lỗi get Gifts:", error);
+    }
   };
 
   // Hàm riêng cho document
@@ -66,7 +189,6 @@ class FormTheme extends React.Component {
   };
 
   handleSaveTheme = () => {
-    console.log(this.state.theme);
     axios
       .post(url_api_v1 + "theme", this.state.theme, {
         headers: {
@@ -93,10 +215,47 @@ class FormTheme extends React.Component {
         },
       });
     }
+    if (type === "code") {
+      this.setState({
+        theme: {
+          ...this.state.theme,
+          code: value,
+        },
+      });
+    }
+    if (type === "title") {
+      this.setState({
+        theme: {
+          ...this.state.theme,
+          title: value,
+        },
+      });
+    }
+    if (type === "short_description") {
+      this.setState({
+        theme: {
+          ...this.state.theme,
+          short_description: value,
+        },
+      });
+    }
+    if (type === "price") {
+      this.setState({
+        theme: {
+          ...this.state.theme,
+          price: value,
+        },
+      });
+    }
   };
 
+  componentDidMount = async () => {
+    await this.getGifts();
+    await this.getCategories();
+  };
   render() {
     let isThemeEdit = this.state.theme != null;
+    let { theme, gifts, categories } = this.state;
     return (
       <>
         {isThemeEdit && (
@@ -116,11 +275,21 @@ class FormTheme extends React.Component {
 
             <div className="form-content">
               <div className="form-content-item">
+                <label>Mã: </label>
+                <input
+                  type="text"
+                  defaultValue={this.state?.theme?.code ?? ""}
+                  placeholder="Nhập code"
+                  onChange={(e) => this.setValue("code", e.target.value)}
+                />
+              </div>
+              <div className="form-content-item">
                 <label>Title: </label>
                 <input
                   type="text"
-                  value={this.state?.theme?.title ?? ""}
+                  defaultValue={this.state?.theme?.title ?? ""}
                   placeholder="Nhập title"
+                  onChange={(e) => this.setValue("title", e.target.value)}
                 />
               </div>
 
@@ -130,38 +299,79 @@ class FormTheme extends React.Component {
                   type="file"
                   placeholder="Nhập title"
                   value={this.state?.thumbnail ?? ""}
+                  onChange={(e) => this.handleChangeThumbnail(e)}
+                />
+              </div>
+              <div className="form-content-item">
+                <label>Giá: </label>
+                <input
+                  type="number"
+                  min={0}
+                  defaultValue={this.state?.theme?.price ?? ""}
+                  placeholder="Nhập Giá"
+                  onChange={(e) => this.setValue("price", e.target.value)}
                 />
               </div>
 
               <div className="form-content-item --form-content-item">
                 <label>Img Slider: </label>
                 <div className="list-img">
-                  {/* <img
-                    src="https://media.istockphoto.com/id/1177199065/photo/african-lion-and-night-in-africa-banner-savannah-landscape-theme-king-of-animals-proud.jpg?s=612x612&w=0&k=20&c=I6zG27ksq2_4rBjLCN8kQMuiBysPA_rnfurxbGsP8BE="
-                    alt="thumbnail"
-                  />
-                   */}
+                  {theme.slider &&
+                    theme.slider.length > 0 &&
+                    theme.slider.map((item, index) => {
+                      return (
+                        <div className="img-item" key={index}>
+                          <img src={item} alt="thumbnail" />
+                          <i
+                            class="bi bi-x-circle icon-close"
+                            onClick={() => this.handleDeleteImageSlider(index)}
+                          ></i>
+                        </div>
+                      );
+                    })}
+
                   {/* <i class="bi bi-plus-circle"></i> */}
 
                   <label htmlFor="file-upload">
                     <i className="bi bi-plus-circle"></i>
                   </label>
-                  <input id="file-upload" multiple typeof="png" type="file" />
+                  <input
+                    id="file-upload"
+                    multiple
+                    onChange={(e) => this.handleAddImageSlider(e)}
+                    accept="image/png"
+                    type="file"
+                  />
                 </div>
               </div>
 
               <div className="form-content-item">
                 <label>Framework: </label>
-                <select>
-                  <option>Laravel</option>
-                  <option>SpringBoot</option>
-                  <option>JavaSwing</option>
+                <select onChange={(e) => this.handleFrameworkChange(e)}>
+                  <option value="Laravel">Laravel</option>
+                  <option value="SpringBoot">SpringBoot</option>
+                  <option value="JavaSwing">JavaSwing</option>
                 </select>
               </div>
               <div className="form-content-item">
                 <label>Quà: </label>
-                <select>
-                  <option>Miễn phí video hướng dẫn cài đặt</option>
+                <select onChange={(e) => this.handleGiftChange(e)}>
+                  {gifts && gifts.length > 0 ? (
+                    gifts.map((item, index) => {
+                      return (
+                        <option
+                          key={item.id}
+                          selected={this.state?.theme?.gift === item.id}
+                          value={item.id}
+                        >
+                          {item.title}
+                        </option>
+                      );
+                    })
+                  ) : (
+                    <option>Không thấy quà</option>
+                  )}
+
                   {/* <option>SpringBoot</option>
                   <option>JavaSwing</option> */}
                 </select>
@@ -180,6 +390,9 @@ class FormTheme extends React.Component {
                   type="text"
                   defaultValue={this.state?.theme?.short_description ?? ""}
                   placeholder="Nhập mô tả ngắn"
+                  onChange={(e) =>
+                    this.setValue("short_description", e.target.value)
+                  }
                 />
               </div>
 
@@ -200,12 +413,29 @@ class FormTheme extends React.Component {
 
               <div className="form-content-item">
                 <label>Danh mục: </label>
-                <select>
+                {/* <select>
                   <option>Project laravel API</option>
                   <option>Cấu trúc và dữ liệu MYSQL</option>
                   <option>Theme React</option>
                   <option>Theme Netbean</option>
                   <option>Theme Spring boot</option>
+                </select> */}
+                <select onChange={(e) => this.handleCategoryChange(e)}>
+                  {categories && categories.length > 0 ? (
+                    categories.map((item, index) => {
+                      return (
+                        <option
+                          key={index}
+                          selected={item.id === this.state.theme.category_id}
+                          value={item.id}
+                        >
+                          {item.name}
+                        </option>
+                      );
+                    })
+                  ) : (
+                    <option>Không thấy danh mục</option>
+                  )}
                 </select>
               </div>
 
@@ -218,7 +448,7 @@ class FormTheme extends React.Component {
               </div>
 
               <div className="form-content-item --form-content-item">
-                <label>Hướng dẫn cài đặt: </label>
+                <label>Yêu cầu hệ thống: </label>
                 <RequiredComponent
                   value={this.state.theme.document}
                   onChange={this.handleDocumentChange}

@@ -251,7 +251,7 @@ class Detail extends React.Component {
               </div>
               <div className="image-list">
                 <div
-                  className={`images-item ${isActive == 0 ? "--active" : ""}`}
+                  className={`images-item ${isActive === 0 ? "--active" : ""}`}
                   onClick={() =>
                     this.setState({ isActive: 0, previewModal: true })
                   }
@@ -259,7 +259,7 @@ class Detail extends React.Component {
                   <img alt="img" src={test1} />
                 </div>
                 <div
-                  className={`images-item ${isActive == 1 ? "--active" : ""}`}
+                  className={`images-item ${isActive === 1 ? "--active" : ""}`}
                   onClick={() =>
                     this.setState({ isActive: 1, previewModal: true })
                   }
@@ -267,7 +267,7 @@ class Detail extends React.Component {
                   <img alt="img" src={test2} />
                 </div>
                 <div
-                  className={`images-item ${isActive == 2 ? "--active" : ""}`}
+                  className={`images-item ${isActive === 2 ? "--active" : ""}`}
                   onClick={() =>
                     this.setState({ isActive: 2, previewModal: true })
                   }

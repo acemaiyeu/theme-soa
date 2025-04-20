@@ -2,30 +2,65 @@ import React from "react";
 import "./Theme.scss";
 import FormTheme from "./FormTheme";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const url_api_v1 = process.env.REACT_APP_URL_API_V1;
 class Theme extends React.Component {
   state = {
     ListTheme: [],
+    limit: 10,
+    search: "",
   };
   handleClick = (item) => {
     if (item === undefined) {
-      item = null;
+      item = {};
     }
     this.setState({ theme: item });
   };
+  handleChangeNumberLoadding = (e) => {
+    let limit = Number(e.target.value);
+    this.setState({ limit });
+    setTimeout(() => {
+      this.getTheme();
+    }, 500);
+  };
+  handleChangeSearch = (e) => {
+    this.setState({ search: e.target.value });
+  };
   getTheme = () => {
     axios
-      .get(url_api_v1 + "themes", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
-        },
-      })
+      .get(
+        url_api_v1 +
+          "themes?limit=" +
+          this.state.limit +
+          "&title=" +
+          this.state.search,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
+          },
+        }
+      )
       .then((response) => {
         this.setState({ ListTheme: response.data?.data });
       })
       .catch((error) => {
         console.log("Loi goi api theme", error);
+      });
+  };
+  deleteTheme = async (id) => {
+    await axios
+      .delete(url_api_v1 + "theme/" + id, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
+        },
+      })
+      .then((res) => {
+        toast.success(res.data.message);
+        this.getTheme();
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
       });
   };
   saveTheme = (theme) => {
@@ -90,12 +125,14 @@ class Theme extends React.Component {
                 <div className="content-filter">
                   <div className="show-result">
                     Hiện:{" "}
-                    <select>
-                      <option>10</option>
-                      <option>20</option>
-                      <option>30</option>
-                      <option>40</option>
-                      <option>50</option>
+                    <select
+                      onChange={(e) => this.handleChangeNumberLoadding(e)}
+                    >
+                      <option value={10}>10</option>
+                      <option value={20}>20</option>
+                      <option value={30}>30</option>
+                      <option value={40}>40</option>
+                      <option value={50}>50</option>
                     </select>
                     Kết quả
                   </div>
@@ -104,8 +141,13 @@ class Theme extends React.Component {
                       className="form-control form-control-sm"
                       type="text"
                       placeholder="Tìm kiếm"
+                      value={this.state.search}
+                      onChange={(e) => this.handleChangeSearch(e)}
                     />
-                    <i className="bi bi-search search-icon"></i>
+                    <i
+                      className="bi bi-search search-icon"
+                      onClick={() => this.getTheme()}
+                    ></i>
                   </div>
                 </div>
                 <div className="content-table">
@@ -167,7 +209,7 @@ class Theme extends React.Component {
                                 </button>
                                 <button
                                   className="btn-default btn-bg-red-op-5"
-                                  onClick={() => this.handleRemove(item)}
+                                  onClick={() => this.deleteTheme(item.id)}
                                 >
                                   <i className="bi bi-trash3"></i>
                                 </button>
