@@ -37,7 +37,7 @@ class NavAdmin extends React.Component {
                 </li>
                 <li className="nav-item">
                   <Link
-                    to="/admin/discounts"
+                    to="/admin/coupons"
                     className="nav-link active"
                     aria-current="page"
                   >

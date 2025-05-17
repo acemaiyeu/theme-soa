@@ -20,6 +20,8 @@ import DetailOrder from "./Client/DetailOrder";
 import { connect } from "react-redux";
 import { fetchCartAndProfile } from "./store/actions/fetchCartAndProfile";
 import forGetPassword from "./Client/forGetPassword";
+import ListCoupon from "./Admin/ListCoupon";
+import CreateCoupon from "./Admin/CreateCoupon";
 
 class App extends React.Component {
   state = {
@@ -80,7 +82,21 @@ function AppContent() {
                         exact
                         component={Theme}
                       />
-                      <Route path="/admin/discounts" exact component={Theme} />
+                      <Route
+                        path="/admin/coupons"
+                        exact
+                        component={ListCoupon}
+                      />
+                      <Route
+                        path="/admin/create-coupon"
+                        exact
+                        component={CreateCoupon}
+                      />
+                      <Route
+                        path="/admin/coupon/:code"
+                        exact
+                        component={CreateCoupon}
+                      />
                     </div>
                   </div>
                 </div>

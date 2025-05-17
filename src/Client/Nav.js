@@ -55,8 +55,8 @@ class Nav extends React.Component {
         this.setState({ sessions: response.data });
 
         if (
-          response.data.data.session_id === "" ||
-          response.data.data.session_id === null
+          response.data.data?.session_id === "" ||
+          response.data.data?.session_id === null
         ) {
           let sessionId = this.generateSessionId();
           axios

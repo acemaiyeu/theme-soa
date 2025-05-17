@@ -3,6 +3,7 @@ import "./Theme.scss";
 import FormTheme from "./FormTheme";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { getThemesByLink } from "../store/actions/ThemeActions";
 
 const url_api_v1 = process.env.REACT_APP_URL_API_V1;
 class Theme extends React.Component {
@@ -10,6 +11,9 @@ class Theme extends React.Component {
     ListTheme: [],
     limit: 10,
     search: "",
+    param_title: "",
+    param_framework: "",
+    param_limit: 10,
   };
   handleClick = (item) => {
     if (item === undefined) {
@@ -17,9 +21,26 @@ class Theme extends React.Component {
     }
     this.setState({ theme: item });
   };
+  getThemesByLink = async (link) => {
+    if (link === "") {
+      return;
+    }
+    let { param_title, param_framework } = this.state;
+    let params = "";
+    if (param_title !== "") {
+      params += "&title=" + param_title;
+    }
+    if (param_framework !== "") {
+      params += "&framework=" + param_framework;
+    }
+    params += "&limit=" + this.state.param_limit;
+
+    let themes = await getThemesByLink(link, params);
+    this.setState({ ListTheme: themes });
+  };
   handleChangeNumberLoadding = (e) => {
     let limit = Number(e.target.value);
-    this.setState({ limit });
+    this.setState({ param_limit: limit });
     setTimeout(() => {
       this.getTheme();
     }, 500);
@@ -28,11 +49,20 @@ class Theme extends React.Component {
     this.setState({ search: e.target.value });
   };
   getTheme = () => {
+    let { param_title, param_framework, param_limit } = this.state;
+    let params = "";
+    if (param_title !== "") {
+      params += "&title=" + param_title;
+    }
+    if (param_framework !== "") {
+      params += "&framework=" + param_framework;
+    }
     axios
       .get(
         url_api_v1 +
           "themes?limit=" +
-          this.state.limit +
+          this.state.param_limit +
+          params +
           "&title=" +
           this.state.search,
         {
@@ -42,7 +72,7 @@ class Theme extends React.Component {
         }
       )
       .then((response) => {
-        this.setState({ ListTheme: response.data?.data });
+        this.setState({ ListTheme: response.data });
       })
       .catch((error) => {
         console.log("Loi goi api theme", error);
@@ -82,7 +112,7 @@ class Theme extends React.Component {
   //     })
   // }
   render() {
-    let { ListTheme } = this.state;
+    let { ListTheme, param_title, param_framework } = this.state;
     return (
       <>
         <div className="container-theme">
@@ -150,6 +180,37 @@ class Theme extends React.Component {
                     ></i>
                   </div>
                 </div>
+                <div className="filter">
+                  <div className="form-container">
+                    <label>Title: </label>
+                    <input
+                      className="input"
+                      defaultValue={param_title}
+                      onChange={(e) =>
+                        this.setState({ param_title: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="form-container">
+                    <label>Framework: </label>
+                    <input
+                      className="input"
+                      defaultValue={param_framework}
+                      onChange={(e) =>
+                        this.setState({ param_framework: e.target.value })
+                      }
+                    />
+                  </div>
+
+                  <div className="form-container">
+                    <button
+                      className="btn btn-bg-orange-op-5"
+                      onClick={() => this.getTheme()}
+                    >
+                      Tìm kiếm
+                    </button>
+                  </div>
+                </div>
                 <div className="content-table">
                   <table className="table table-bordered">
                     <thead>
@@ -187,9 +248,9 @@ class Theme extends React.Component {
                           </button>
                         </td>
                       </tr> */}
-                      {ListTheme &&
-                        ListTheme.length > 0 &&
-                        ListTheme.map((item, index) => {
+                      {ListTheme?.data &&
+                        ListTheme?.data.length > 0 &&
+                        ListTheme?.data.map((item, index) => {
                           return (
                             <tr key={item.id}>
                               <th scope="row">{index + 1}</th>
@@ -220,9 +281,58 @@ class Theme extends React.Component {
                     </tbody>
                   </table>
                 </div>
-                <div className="content-page">
-                  <div className="content-page-title"></div>
-                  <div className="content-page-button"></div>
+                <div className="list-paginate">
+                  <div className="list-paginate-container">
+                    <button
+                      className="first-page"
+                      disabled={ListTheme?.meta?.pagination.current_page === 1}
+                    >
+                      Trang đầu
+                    </button>
+                    <button
+                      className="prev-page"
+                      disabled={
+                        ListTheme?.meta?.pagination.current_page <=
+                          ListTheme?.meta?.pagination.total_pages &&
+                        !ListTheme?.meta?.pagination?.links?.previous
+                      }
+                      onClick={() =>
+                        this.getThemesByLink(
+                          ListTheme?.meta?.pagination?.links?.previous
+                        )
+                      }
+                    >
+                      Trang trước
+                    </button>
+                    <button className="current-page">
+                      {ListTheme?.meta?.pagination.current_page} {"/"}{" "}
+                      {ListTheme?.meta?.pagination.total_pages}
+                    </button>
+                    <button
+                      className="next-page"
+                      disabled={
+                        ListTheme?.meta?.pagination.current_page >=
+                          ListTheme?.meta?.pagination.total_pages &&
+                        !ListTheme?.meta?.pagination?.links?.next
+                      }
+                      onClick={() =>
+                        this.getThemesByLink(
+                          ListTheme?.meta?.pagination?.links?.next
+                        )
+                      }
+                    >
+                      Trang sau
+                    </button>
+                    <button
+                      className="last-page"
+                      disabled={
+                        ListTheme?.meta?.pagination.current_page ===
+                        ListTheme?.meta?.pagination.total_pages
+                      }
+                    >
+                      Trang cuối
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

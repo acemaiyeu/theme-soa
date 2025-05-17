@@ -38,6 +38,7 @@ class Contents extends React.Component {
   render() {
     let listThemes = this.state.listThemes.data;
     let listUsers = this.props.dataRedux;
+
     return (
       <>
         <div className="contents">
@@ -55,7 +56,9 @@ class Contents extends React.Component {
           <div className="header-filter">
             <div className="header-filter-box">
               <div className="header-filter-item">
-                <p>Tìm thấy 121 kết quả</p>
+                {listThemes?.length > 0 && (
+                  <p>Tìm thấy {listThemes?.length} kết quả</p>
+                )}
               </div>
               <div className="header-filter-item">
                 <div className="sort-box">
@@ -87,7 +90,7 @@ class Contents extends React.Component {
 
                         <span className="price">
                           {/* {item.price_old = 1 && item.price_old > 0 && ( */}
-                          <p className="price-old">{item.price_text} </p>
+                          {/* <p className="price-old">{item.price_text} </p> */}
                           {/* )} */}
 
                           <p className="price-new">{item.price_text}</p>

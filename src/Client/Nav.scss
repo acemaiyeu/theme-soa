@@ -375,20 +375,17 @@
   outline: none;
   min-width: 70px;
   margin: 2px 2px 2px 0;
-  background-color: var(--white-color);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
-  background-color: var(--primary-color);
   color: var(--white-color);
   font-size: 1.8rem;
   text-align: center;
   padding: 10px 10px;
   &:hover {
     cursor: pointer;
-    background-color: #fb6445;
   }
   // border: ;
 }

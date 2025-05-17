@@ -6,11 +6,31 @@ const url_api_v1 = process.env.REACT_APP_URL_API_V1;
 // Hàm gọi API lấy thông tin người dùng
 const getProfile = async () => {
   try {
-    const response = await axios.get(`${url_api_v1}profile`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
+    const response = {};
+
+    if (
+      window.location.href.length -
+        window.location.href.replace("/admin", "").length ===
+      0
+    ) {
+      response = await axios.get(`${url_api_v1}profile`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+    }
+    if (
+      window.location.href.length -
+        window.location.href.replace("/admin", "").length ===
+      6
+    ) {
+      response = await axios.get(`${url_api_v1}profile`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
+        },
+      });
+    }
+
     return response.data;
   } catch (error) {
     console.error("Lỗi khi gọi API getProfile:", error);
