@@ -1,9 +1,11 @@
 import axios from "axios";
 import { API_URL } from "../../config";
 
-export const getCoupons = (params) => {
+const api_url_v1 = process.env.REACT_APP_URL_API_V1;
+
+export const getListGift = (params = "") => {
   return axios
-    .get(API_URL + "/api/v1/coupons?limit=" + params, {
+    .get(api_url_v1 + "gifts?limit=" + params, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
       },
@@ -14,7 +16,7 @@ export const getCoupons = (params) => {
       throw err;
     });
 };
-export const getCouponByLink = (link, params) => {
+export const getGiftsByLink = (link, params) => {
   return axios
     .get(link + "&limit=" + params, {
       headers: {
@@ -28,9 +30,9 @@ export const getCouponByLink = (link, params) => {
     });
 };
 
-export const getDetailCoupon = (code) => {
+export const getDetailGift = (id) => {
   return axios
-    .get(API_URL + "/api/v1/coupon/" + code, {
+    .get(API_URL + "/api/v1/gift/" + id, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
       },
@@ -42,31 +44,11 @@ export const getDetailCoupon = (code) => {
     });
 };
 
-export const changeStatusCoupon = (coupon_id, status) => {
-  return axios
-    .put(
-      API_URL + "/api/v1/update-coupon",
-      {
-        id: coupon_id,
-        active: status,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
-        },
-      }
-    )
-    .then((res) => res.data)
-    .catch((err) => {
-      console.log(err);
-      throw err;
-    });
-};
-export const createCoupon = (coupon) => {
+export const createGift = (gift) => {
   return axios
     .post(
-      API_URL + "/api/v1/create-coupon",
-      coupon, // truyền toàn bộ object coupon
+      API_URL + "/api/v1/gift",
+      gift, // truyền toàn bộ object coupon
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
@@ -79,11 +61,11 @@ export const createCoupon = (coupon) => {
       throw err;
     });
 };
-export const updateCoupon = (coupon) => {
+export const updateGift = (gift) => {
   return axios
     .put(
-      API_URL + "/api/v1/update-coupon",
-      coupon, // truyền toàn bộ object coupon
+      API_URL + "/api/v1/gift",
+      gift, // truyền toàn bộ object coupon
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
@@ -96,10 +78,10 @@ export const updateCoupon = (coupon) => {
       throw err;
     });
 };
-export const deleteCoupon = (code) => {
+export const deleteGift = (id) => {
   return axios
     .delete(
-      API_URL + "/api/v1/delete-coupon/" + code,
+      API_URL + "/api/v1/delete-gift/" + id,
 
       {
         headers: {

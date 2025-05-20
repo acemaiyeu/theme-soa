@@ -1,0 +1,19 @@
+.warranty-container {
+  width: 60%;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 26px;
+  color: black;
+  .warranty-title {
+    margin-top: 80px;
+  }
+  .info-list {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    > li {
+      font-size: 24px;
+    }
+  }
+}

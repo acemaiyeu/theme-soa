@@ -3,7 +3,7 @@ import "./contents.scss";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 import { connect } from "react-redux";
-
+import { getThemes } from "../store/actions/ThemeActions";
 const url_api_v0 = process.env.REACT_APP_URL_API_V0;
 class Contents extends React.Component {
   state = {
@@ -19,24 +19,32 @@ class Contents extends React.Component {
     return true;
   };
   handleDetail = (item) => {
-    this.props.history.push(`/detail/${item.title} - ${item.code}`);
+    this.props.history.push(`/detail/${item.code}`);
   };
-  componentDidMount = () => {
-    console.log("CHECK URL CONTENT: ", url_api_v0);
-    axios
-      .get(url_api_v0 + "themes")
-      .then((response) => {
-        this.setState({ listThemes: response.data });
-      })
-      .catch((error) => {
-        console.error("Có lỗi khi gọi API:", error);
-      });
+  componentDidMount = async () => {
+    await this.getThemes();
+    this.setState({ listThemes: this.props.listThemes });
+  };
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.listThemes !== this.props.listThemes) {
+      this.setState({ listThemes: this.props.listThemes });
+    }
+  };
+  getThemes = async (keywork = "") => {
+    let params = "";
+    if (keywork.substring(0, 4) === "price-up") {
+      params += "&sort[price]=asc";
+    }
+    if (keywork.substring(0, 4) === "price-down") {
+      params += "&sort[price]=desc";
+    }
+    await this.props.getThemes(params);
   };
   handleDeleteUser = (user) => {
     this.props.deleteUserRedux(user);
   };
   render() {
-    let listThemes = this.state.listThemes.data;
+    let listThemes = this.state.listThemes;
     let listUsers = this.props.dataRedux;
 
     return (
@@ -80,10 +88,7 @@ class Contents extends React.Component {
                   <React.Fragment key={index}>
                     <div className="content-item" key={index}>
                       <div className="content-item-img">
-                        <img
-                          src="https://media.istockphoto.com/id/1177199065/photo/african-lion-and-night-in-africa-banner-savannah-landscape-theme-king-of-animals-proud.jpg?s=612x612&w=0&k=20&c=I6zG27ksq2_4rBjLCN8kQMuiBysPA_rnfurxbGsP8BE="
-                          alt="2"
-                        />
+                        <img src={item.thumbnail_img} alt="img" />
                       </div>
                       <div className="content-item-text">
                         <h3>{item.title}</h3>
@@ -142,12 +147,14 @@ class Contents extends React.Component {
 const mapStateToProps = (state) => {
   return {
     dataRedux: state.users,
+    listThemes: state.listThemes,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
     deleteUserRedux: (userDelete) =>
       dispatch({ type: "DELETE_USER", payload: userDelete }),
+    getThemes: (params) => dispatch(getThemes(params)),
   };
 };
 

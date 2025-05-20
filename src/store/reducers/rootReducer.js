@@ -1,6 +1,9 @@
+import { GET_THEME } from "../../config";
 const initState = {
   cart: { data: null },
   profile: { data: null },
+  listThemes: [],
+  listCategories: [],
 };
 const rootReducer = (state = initState, action) => {
   switch (action.type) {
@@ -20,6 +23,12 @@ const rootReducer = (state = initState, action) => {
       return {
         ...state,
         profile: action.payload,
+      };
+    case GET_THEME:
+      console.log("action.payload", action.payload);
+      return {
+        ...state,
+        listThemes: action.payload,
       };
     default:
       return state;

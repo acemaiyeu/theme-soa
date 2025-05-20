@@ -2,18 +2,16 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { API_URL, GET_THEME } from "../../config";
 
-export const getThemes = (type, limit = 1000) => {
+export const getThemes = (params = "", limit = 1000) => {
   return async (dispatch) => {
     try {
-      let params = "";
-
       const res = await axios.get(
         API_URL + "/api/v0/themes?limit=" + limit + params
       );
-
+      console.log(res.data);
       dispatch({
         type: GET_THEME,
-        payload: res.data,
+        payload: res.data?.data,
       });
       if (res.data?.data.length === 0) {
         toast.warning("Không tìm thấy sản phẩm phù hợp");

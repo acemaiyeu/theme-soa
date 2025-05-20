@@ -8,9 +8,9 @@ import { connect } from "react-redux";
 import { addToCart } from "./CartFunctions";
 import { fetchCart } from "../store/actions/fetchCartAndProfile";
 
-import test1 from "../assets/images/test1.jpg";
-import test2 from "../assets/images/test2.jpg";
-import test3 from "../assets/images/test3.jpg";
+// import test1 from "../assets/images/test1.jpg";
+// import test2 from "../assets/images/test2.jpg";
+// import test3 from "../assets/images/test3.jpg";
 // import "./Home.scss";
 const url_api_v0 = process.env.REACT_APP_URL_API_V0;
 class Detail extends React.Component {
@@ -40,7 +40,7 @@ class Detail extends React.Component {
 
   getDetail = () => {
     let { path } = this.props.match.params;
-    let theme_code = path.replace("-", "           ").slice(-15).trim();
+    let theme_code = path;
 
     axios
       .get(url_api_v0 + "theme/" + theme_code)
@@ -58,7 +58,6 @@ class Detail extends React.Component {
   }
   render() {
     let { description, theme, previewModal, isActive } = this.state;
-    console.log(previewModal);
     return (
       <>
         <div className="container-detail">
@@ -66,10 +65,7 @@ class Detail extends React.Component {
             <div className="content__item">
               <div className="left">
                 <div className="img">
-                  <img
-                    alt="img"
-                    src="https://media.istockphoto.com/id/1177199065/photo/african-lion-and-night-in-africa-banner-savannah-landscape-theme-king-of-animals-proud.jpg?s=612x612&w=0&k=20&c=I6zG27ksq2_4rBjLCN8kQMuiBysPA_rnfurxbGsP8BE="
-                  ></img>
+                  <img alt="img" src={theme.thumbnail_img}></img>
                 </div>
                 <div className="text"></div>
               </div>
@@ -168,7 +164,6 @@ class Detail extends React.Component {
                 <div className="slider-content">
                   {description.type === "description" && (
                     <>
-                      <span>Đây là phần mô tả</span>
                       {typeof theme.long_description === "string"
                         ? parse(theme.long_description)
                         : null}
@@ -246,7 +241,7 @@ class Detail extends React.Component {
                 class="bi bi-x"
                 onClick={() => this.setState({ previewModal: false })}
               ></i>
-              <div className="images">
+              {/* <div className="images">
                 <img alt="img" src={test1} />
               </div>
               <div className="image-list">
@@ -274,6 +269,29 @@ class Detail extends React.Component {
                 >
                   <img alt="img" src={test3} />
                 </div>
+              </div> */}
+
+              <div
+                style={{
+                  position: "relative",
+                  width: "95%",
+                  paddingTop: "45%" /* 16:9 ratio */,
+                }}
+              >
+                <iframe
+                  src={`https://www.youtube.com/embed/${theme.link_youtube_demo}`}
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                  }}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                ></iframe>
               </div>
             </div>
           </div>
