@@ -1,0 +1,199 @@
+.form-theme {
+  width: 30%;
+  background-color: white;
+  z-index: 1000;
+  position: absolute;
+  height: 800px;
+  top: 50px;
+  right: 0;
+  border: 1px solid #333;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  // visibility: hidden;
+  animation: fadeIn ease-in-out 0.5s;
+  transition: opacity 3s ease, visibility 3s ease;
+  overflow-y: scroll;
+  .form-header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 10px;
+    justify-content: center;
+    .icon-close {
+      right: 30px;
+      top: 10px;
+      font-size: 2rem;
+      cursor: pointer;
+      &:hover {
+        color: var(--primary-color);
+      }
+      &:checked .form-theme {
+        animation: fadeOut 0.5s forwards;
+      }
+    }
+    .thumbnail-img {
+      // width: 100px;
+      height: 100px;
+      top: 10px;
+      left: 10px;
+      border-radius: 3px;
+      background-color: #ccc;
+      border: 1px solid #333;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+
+      overflow: hidden;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+  .form-content {
+    width: 100%;
+    // border: 1px solid#333;
+    display: flex;
+    flex-direction: column;
+    .form-content-item {
+      width: 100%;
+      // height: 50px;
+      align-items: center;
+      justify-content: center;
+      justify-items: center;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-start;
+      padding: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      border: none;
+      outline: none;
+      flex-wrap: wrap;
+      input,
+      label,
+      select {
+        margin: auto 0;
+        font-size: 2rem;
+      }
+      label {
+        min-width: 100px;
+        text-align: left;
+      }
+      input {
+        height: 26px;
+        margin-left: 10px;
+        flex: 1;
+        padding: 0 10px;
+        outline: none;
+        border: none;
+        margin-top: 5px;
+        &:focus {
+          border: none;
+          outline: none;
+        }
+      }
+      select {
+        flex: 1;
+        height: 30px;
+        outline: none;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        margin-left: 10px;
+      }
+      textarea {
+        width: 100%;
+        height: 100px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        outline: none;
+        margin-top: 10px;
+        font-size: 1.3rem;
+      }
+      .list-img {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        .img-item {
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
+          margin-top: 10px;
+          position: relative;
+          .icon-close {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 2rem;
+            cursor: pointer;
+            &:hover {
+              color: var(--primary-color);
+            }
+          }
+        }
+        .img-item + .img-item {
+          margin-left: 3px;
+        }
+        img + img {
+          margin-left: 3px;
+        }
+        img {
+          width: 100px;
+          // height: 100%;
+          margin-top: 5px;
+        }
+        i {
+          font-size: 2rem;
+          margin-left: 5px;
+          cursor: pointer;
+          &:hover {
+            color: var(--primary-color);
+          }
+        }
+      }
+    }
+    .form-content-item + .form-content-item {
+      margin-top: 20px;
+    }
+    .container-button {
+      width: 40%;
+      margin: 0 auto;
+      margin: 20px auto;
+      text-align: center;
+      display: flex;
+      .btn-default {
+        width: 100%;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+}
+@keyframes fadeIn {
+  from {
+    right: -50%;
+    opacity: 0;
+  }
+  to {
+    right: 0;
+    opacity: 1;
+  }
+}
+.--form-content-item {
+  display: flex;
+  flex-direction: column;
+}
+.quill {
+  margin-top: 10px;
+  width: 100%;
+}
+@keyframes fadeOut {
+  from {
+    right: 0;
+    opacity: 1;
+  }
+  to {
+    right: -50%;
+    opacity: 0;
+  }
+}
+#file-upload {
+  display: none;
+}

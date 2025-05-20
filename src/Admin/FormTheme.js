@@ -110,7 +110,7 @@ class FormTheme extends React.Component {
     this.setState({
       theme: {
         ...this.state.theme,
-        Framework: e.target.value,
+        framework: e.target.value,
       },
     }),
   ];
@@ -131,7 +131,7 @@ class FormTheme extends React.Component {
       });
 
       this.setState({
-        url_image_temp: response.data.link,
+        url_image_temp: response.data.url,
       });
 
       toast.success("Upload thành công!");
@@ -153,6 +153,10 @@ class FormTheme extends React.Component {
       });
       this.setState({
         gifts: response.data.data,
+        theme: {
+          ...this.state.theme,
+          gift: response.data.data[0].id,
+        },
       });
     } catch (error) {
       console.error("Lỗi get Gifts:", error);
@@ -203,6 +207,7 @@ class FormTheme extends React.Component {
         this.setState({ theme: null });
       })
       .catch((err) => {
+        console.log(err);
         toast.error(err.response.data.message);
       });
   };
@@ -239,6 +244,14 @@ class FormTheme extends React.Component {
         },
       });
     }
+    if (type === "link_youtube_demo") {
+      this.setState({
+        theme: {
+          ...this.state.theme,
+          link_youtube_demo: value,
+        },
+      });
+    }
     if (type === "price") {
       this.setState({
         theme: {
@@ -252,6 +265,12 @@ class FormTheme extends React.Component {
   componentDidMount = async () => {
     await this.getGifts();
     await this.getCategories();
+    this.setState({
+      theme: {
+        ...this.state.theme,
+        framework: "Laravel",
+      },
+    });
   };
   render() {
     let isThemeEdit = this.state.theme != null;
@@ -312,8 +331,28 @@ class FormTheme extends React.Component {
                   onChange={(e) => this.setValue("price", e.target.value)}
                 />
               </div>
+              <div className="form-content-item">
+                <label>Link youtube demo: </label>
+                <input
+                  type="text"
+                  defaultValue={this.state?.theme?.link_youtube_demo ?? ""}
+                  placeholder="Nhập Link demo"
+                  onChange={(e) =>
+                    this.setValue("link_youtube_demo", e.target.value)
+                  }
+                />
+              </div>
+              <div className="form-content-item">
+                <label>Responsive: </label>
+                <input
+                  type="text"
+                  defaultValue={this.state?.theme?.responsive ?? ""}
+                  placeholder="Tablet, Mobile"
+                  onChange={(e) => this.setValue("responsive", e.target.value)}
+                />
+              </div>
 
-              <div className="form-content-item --form-content-item">
+              {/* <div className="form-content-item --form-content-item">
                 <label>Img Slider: </label>
                 <div className="list-img">
                   {theme.slider &&
@@ -328,10 +367,10 @@ class FormTheme extends React.Component {
                           ></i>
                         </div>
                       );
-                    })}
+                    })} */}
 
-                  {/* <i class="bi bi-plus-circle"></i> */}
-
+              {/* <i class="bi bi-plus-circle"></i> */}
+              {/* 
                   <label htmlFor="file-upload">
                     <i className="bi bi-plus-circle"></i>
                   </label>
@@ -343,7 +382,7 @@ class FormTheme extends React.Component {
                     type="file"
                   />
                 </div>
-              </div>
+              </div> */}
 
               <div className="form-content-item">
                 <label>Framework: </label>
@@ -351,6 +390,7 @@ class FormTheme extends React.Component {
                   <option value="Laravel">Laravel</option>
                   <option value="SpringBoot">SpringBoot</option>
                   <option value="JavaSwing">JavaSwing</option>
+                  <option value="ReactJS">ReactJS</option>
                 </select>
               </div>
               <div className="form-content-item">

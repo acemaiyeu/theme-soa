@@ -56,6 +56,15 @@ class NavAdmin extends React.Component {
                 </li>
                 <li className="nav-item">
                   <Link
+                    to="/admin/gifts"
+                    className="nav-link active"
+                    aria-current="page"
+                  >
+                    <i className="bi bi-building"></i> Quản lý Quà
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
                     to="/admin/theme"
                     className="nav-link active"
                     aria-current="page"

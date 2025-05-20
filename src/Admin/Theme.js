@@ -95,13 +95,15 @@ class Theme extends React.Component {
   };
   saveTheme = (theme) => {
     let { ListTheme } = this.state;
-    ListTheme.map((item) => {
-      if (item.id === theme.id) {
-        item = theme;
-      }
-      return item;
-    });
-    this.setState({ ListTheme });
+    if (ListTheme && ListTheme.length > 0) {
+      ListTheme.map((item) => {
+        if (item.id === theme.id) {
+          item = theme;
+        }
+        return item;
+      });
+      this.setState({ ListTheme });
+    }
   };
   componentDidMount() {
     this.getTheme();

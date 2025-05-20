@@ -91,7 +91,7 @@ class Cart extends React.Component {
         return;
       }
 
-      alert("Không tìm thấy giỏ hàng");
+      toast.warning("Không tìm thấy giỏ hàng");
       localStorage.removeItem("cart");
       this.props.history.push("/");
     } catch (error) {
@@ -223,15 +223,15 @@ class Cart extends React.Component {
   };
   checkout = () => {
     if (!this.state.cart?.data?.fullname) {
-      alert("Vui lòng nhập họ và tên");
+      toast.warning("Vui lòng nhập họ và tên");
       return;
     }
     if (!this.state.cart?.data?.user_email) {
-      alert("Vui lòng nhập email");
+      toast.warning("Vui lòng nhập email");
       return;
     }
     if (!this.state.cart?.data?.user_phone) {
-      alert("Vui lòng nhập số điện thoại");
+      toast.warning("Vui lòng nhập số điện thoại");
       return;
     }
     axios
@@ -529,8 +529,8 @@ class Cart extends React.Component {
                     />
 
                     <img
-                      src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-ZaloPay-Square.png"
-                      alt="momo-logo"
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhwXB6mnzK2EK0jEUnlsa7-whMh_mcI88znw&s"
+                      alt="zalopay-logo"
                     ></img>
                     <div className="payment-title">Thanh toán bằng Zalopay</div>
                   </div>

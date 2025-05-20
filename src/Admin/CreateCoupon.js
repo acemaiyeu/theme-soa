@@ -781,7 +781,18 @@ class CreateCoupon extends React.Component {
                       className="input"
                       placeholder="Vui lòng nhập số tiền giới hạn"
                       type="text"
-                      value={coupon.data?.limit ?? ""}
+                      value={convertTextToMoneyInput(coupon.data?.limit) ?? ""}
+                      onChange={(e) =>
+                        this.setState({
+                          coupon: {
+                            ...coupon,
+                            data: {
+                              ...coupon.data,
+                              limit: convertMoneyInputToText(e.target.value),
+                            },
+                          },
+                        })
+                      }
                     />
                   </div>
                 )}

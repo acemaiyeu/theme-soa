@@ -22,6 +22,16 @@ import { fetchCartAndProfile } from "./store/actions/fetchCartAndProfile";
 import forGetPassword from "./Client/forGetPassword";
 import ListCoupon from "./Admin/ListCoupon";
 import CreateCoupon from "./Admin/CreateCoupon";
+import Footer from "./Client/Footer";
+import InfoWarranty from "./Client/InfoWarranty";
+import InfoRefund from "./Client/InfoRefund";
+import Term from "./Client/Term";
+import SecurityInfomation from "./Client/SecurityInfomation";
+import Introduce from "./Client/Introduce";
+import ListCategory from "./Admin/ListCategory";
+import CreateCategory from "./Admin/CreateCategory";
+import ListGift from "./Admin/ListGift";
+import CreateGift from "./Admin/CreateGift";
 
 class App extends React.Component {
   state = {
@@ -54,11 +64,20 @@ function AppContent() {
           <Route exact path="/" component={Home} />
           <Route path="/detail/:path" exact component={Detail} />
           <Route path="/cart" component={Cart} />
+          <Route path="/info-warranty" component={InfoWarranty} />
+          <Route path="/info-refund" component={InfoRefund} />
+          <Route path="/info-terms" component={Term} />
+          <Route
+            path="/info-security-infomation"
+            component={SecurityInfomation}
+          />
+          <Route path="/introduce" component={Introduce} />
           <Route path="/profile" component={Profile} />
           <Route path="/my-orders" exact component={MyOrders} />
           <Route path="/my-order/:code" component={DetailOrder} />
           <Route path="/login" exact component={LoginAndRegister} />
           <Route path="/forgot" exact component={forGetPassword} />
+
           {isAdminRoute ? (
             <>
               <Route path="/admin/login" exact component={LoginAdmin} />
@@ -97,6 +116,33 @@ function AppContent() {
                         exact
                         component={CreateCoupon}
                       />
+                      <Route
+                        path="/admin/category"
+                        exact
+                        component={ListCategory}
+                      />
+                      <Route
+                        path="/admin/category/create"
+                        exact
+                        component={CreateCategory}
+                      />
+                      <Route
+                        path="/admin/category/create/:code"
+                        exact
+                        component={CreateCategory}
+                      />
+
+                      <Route path="/admin/gifts" exact component={ListGift} />
+                      <Route
+                        path="/admin/gift/create"
+                        exact
+                        component={CreateGift}
+                      />
+                      <Route
+                        path="/admin/gift/create/:id"
+                        exact
+                        component={CreateGift}
+                      />
                     </div>
                   </div>
                 </div>
@@ -106,6 +152,7 @@ function AppContent() {
             <></>
           )}
         </Switch>
+        {!isAdminRoute && <Footer />}
       </header>
       <ToastContainer
         position="top-right"
