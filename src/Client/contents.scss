@@ -81,6 +81,7 @@
       width: 100%;
       // height: 171px;
       min-width: 243px;
+      min-height: 212px;
       top: 0;
       // border: 1px solid black;
       left: 0;
@@ -167,6 +168,24 @@
     &:hover .content-item-modal {
       display: flex;
     }
+  }
+  .content-item.loadding::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    animation: right-to-left 0.3s ease-in-out forwards;
+  }
+}
+@keyframes right-to-left {
+  from {
+    transform: rotateX("-50%");
+  }
+  to {
+    transform: rotateX("50%");
   }
 }
 
@@ -302,6 +321,7 @@ h3 {
   }
   .contents .content-item .content-item-img {
     min-width: 40px;
+    min-height: 89px;
   }
   .contents .content-item .content-item-info {
     display: none;
@@ -376,5 +396,60 @@ h3 {
     .content-item-code {
       display: none;
     }
+  }
+}
+
+.content-item.loading {
+  width: 300px;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ccc;
+  font-family: Arial, sans-serif;
+  display: flex;
+}
+
+/* Khi có class loading */
+.content-item.loading .image,
+.content-item.loading .title,
+.content-item.loading .price,
+.content-item.loading .info {
+  background: linear-gradient(-90deg, #e0e0e0 0%, #f8f8f8 50%, #e0e0e0 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  color: transparent;
+  border-radius: 5px;
+}
+
+/* Kích thước các khối skeleton */
+.card .image {
+  width: 100%;
+  height: 150px;
+  margin-bottom: 10px;
+}
+
+.card .title {
+  height: 20px;
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+.card .price {
+  height: 18px;
+  margin: 8px 0;
+  font-weight: bold;
+  color: red;
+}
+
+.card .info {
+  height: 16px;
+  margin: 4px 0;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
   }
 }

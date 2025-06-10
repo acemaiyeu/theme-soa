@@ -46,7 +46,6 @@ class Contents extends React.Component {
   render() {
     let listThemes = this.state.listThemes;
     let listUsers = this.props.dataRedux;
-
     return (
       <>
         <div className="contents">
@@ -61,6 +60,7 @@ class Contents extends React.Component {
                 </div>
               );
             })}
+
           <div className="header-filter">
             <div className="header-filter-box">
               <div className="header-filter-item">
@@ -81,6 +81,17 @@ class Contents extends React.Component {
             </div>
           </div>
           <div className="content">
+            {!listThemes === undefined ||
+              (listThemes.length === 0 &&
+                Array.from({ length: 10 }).map((_, i) => (
+                  <div class="content-item loading">
+                    <div class="image"></div>
+                    <div class="title">Bộ api cho website bán hàng</div>
+                    <div class="price">100.000 đ</div>
+                    <div class="info">Framework: Không</div>
+                    <div class="info">Thư viện: Không</div>
+                  </div>
+                )))}
             {listThemes &&
               listThemes.length > 0 &&
               listThemes.map((item, index) => {

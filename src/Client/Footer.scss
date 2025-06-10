@@ -41,3 +41,16 @@
     }
   }
 }
+@media screen and (max-width: 768px) {
+  .footer .footer-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    .footer-item {
+      width: 100%;
+      font-size: 12px;
+    }
+  }
+  .footer .footer-container .footer-item .footer-item-title {
+    font-size: 16px;
+  }
+}

@@ -8,7 +8,6 @@ export const getThemes = (params = "", limit = 1000) => {
       const res = await axios.get(
         API_URL + "/api/v0/themes?limit=" + limit + params
       );
-      console.log(res.data);
       dispatch({
         type: GET_THEME,
         payload: res.data?.data,

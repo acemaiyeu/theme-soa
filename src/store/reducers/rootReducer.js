@@ -25,7 +25,6 @@ const rootReducer = (state = initState, action) => {
         profile: action.payload,
       };
     case GET_THEME:
-      console.log("action.payload", action.payload);
       return {
         ...state,
         listThemes: action.payload,
